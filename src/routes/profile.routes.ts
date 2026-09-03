@@ -26,6 +26,7 @@ const updateProfileSchema = z.object({
     'VERY_ACTIVE',
     'EXTREMELY_ACTIVE',
   ]),
+  dietaryPreference: z.enum(['VEGAN', 'VEGETARIAN', 'NON_VEGETARIAN']).default('NON_VEGETARIAN'),
 });
 
 /**
@@ -73,6 +74,7 @@ router.put(
         targetWeightKg,
         goal,
         activityLevel,
+        dietaryPreference,
       } = req.body;
 
       // Run calculation engine
@@ -96,6 +98,7 @@ router.put(
           targetWeightKg: targetWeightKg || currentWeightKg,
           goal,
           activityLevel,
+          dietaryPreference: dietaryPreference || 'NON_VEGETARIAN',
           bmr: metrics.bmr,
           tdee: metrics.tdee,
           targetCalories: metrics.targetCalories,
@@ -112,6 +115,7 @@ router.put(
           targetWeightKg: targetWeightKg || currentWeightKg,
           goal,
           activityLevel,
+          dietaryPreference: dietaryPreference || 'NON_VEGETARIAN',
           bmr: metrics.bmr,
           tdee: metrics.tdee,
           targetCalories: metrics.targetCalories,

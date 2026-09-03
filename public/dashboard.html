@@ -372,7 +372,10 @@
     <div class="content-grid">
       <!-- Nutrition & Meals -->
       <div class="panel">
-        <h2>🥗 Personalized Daily Meals</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h2 style="margin-bottom: 0;">🥗 Personalized Daily Meals</h2>
+          <span id="dietBadge" style="font-size: 12px; padding: 4px 10px; border-radius: 999px; background: rgba(16, 185, 129, 0.2); color: var(--accent-green); font-weight: 700;">Diet Plan</span>
+        </div>
         
         <div class="macros-grid">
           <div class="macro-box">
@@ -471,6 +474,14 @@
         const planData = await planRes.json();
         if (planData.success) {
           const targets = planData.data.userTargets;
+          const dietPref = planData.data.dietaryPreference || 'NON_VEGETARIAN';
+          const dietLabels = {
+            VEGAN: '🌱 Vegan Diet',
+            VEGETARIAN: '🥗 Vegetarian Diet',
+            NON_VEGETARIAN: '🥩 Non-Veg Diet',
+          };
+          document.getElementById('dietBadge').innerText = dietLabels[dietPref] || 'Diet Plan';
+
           document.getElementById('goalBadge').innerText = planData.data.goal;
           document.getElementById('targetCaloriesVal').innerText = targets.targetCalories;
           document.getElementById('macroCal').innerText = targets.targetCalories;
@@ -481,28 +492,32 @@
           const meals = planData.data.meals;
           let mealHtml = '';
           const mealList = [
-            { cat: 'Breakfast', m: meals.breakfast },
-            { cat: 'Lunch', m: meals.lunch },
-            { cat: 'Dinner', m: meals.dinner },
-            { cat: 'Snack', m: meals.snack },
+            { cat: 'Breakfast', m: meals.breakfast, tagColor: 'rgba(255, 87, 34, 0.2)', tagTextColor: '#ff5722' },
+            { cat: 'Lunch', m: meals.lunch, tagColor: 'rgba(56, 189, 248, 0.2)', tagTextColor: '#38bdf8' },
+            { cat: '⚡ Pre-Workout Fuel', m: meals.preWorkout, tagColor: 'rgba(234, 179, 8, 0.2)', tagTextColor: '#eab308' },
+            { cat: '💪 Post-Workout Recovery', m: meals.postWorkout, tagColor: 'rgba(139, 92, 246, 0.2)', tagTextColor: '#a855f7' },
+            { cat: 'Dinner', m: meals.dinner, tagColor: 'rgba(16, 185, 129, 0.2)', tagTextColor: '#10b981' },
+            { cat: 'Snack', m: meals.snack, tagColor: 'rgba(236, 72, 153, 0.2)', tagTextColor: '#ec4899' },
           ];
 
           mealList.forEach(item => {
             if (item.m) {
+              const ingredientsList = Array.isArray(item.m.ingredients) ? item.m.ingredients.join(' • ') : '';
               mealHtml += `
                 <div class="meal-item">
                   <div class="meal-header">
                     <div class="meal-title">${item.m.name}</div>
-                    <span class="meal-tag">${item.cat}</span>
+                    <span class="meal-tag" style="background: ${item.tagColor}; color: ${item.tagTextColor};">${item.cat}</span>
                   </div>
                   <div class="meal-macros">
-                    🔥 ${item.m.calories} kcal • 🥩 ${item.m.proteinGrams}g Protein • 🌾 ${item.m.carbsGrams}g Carbs • 🥑 ${item.m.fatsGrams}g Fats
+                    🔥 <strong>${item.m.calories} kcal</strong> &nbsp;|&nbsp; 🥩 <strong>${item.m.proteinGrams}g</strong> Pro &nbsp;|&nbsp; 🌾 <strong>${item.m.carbsGrams}g</strong> Carb &nbsp;|&nbsp; 🥑 <strong>${item.m.fatsGrams}g</strong> Fat
                   </div>
+                  ${ingredientsList ? `<div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">🥣 <em>${ingredientsList}</em></div>` : ''}
                 </div>
               `;
             }
           });
-          document.getElementById('mealsContainer').innerHTML = mealHtml;
+          document.getElementById('mealsContainer').innerHTML = mealHtml || '<p style="color: var(--text-muted);">No meals found for this goal and diet.</p>';
         }
 
         // 4. Exercises list

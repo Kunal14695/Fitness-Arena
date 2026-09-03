@@ -35,6 +35,7 @@ model Profile {
   targetWeightKg Float
   goal           String   // "BULK", "CUT", "MAINTAIN"
   activityLevel  String   // "SEDENTARY", "LIGHT", "MODERATE", "VERY_ACTIVE", "EXTREMELY_ACTIVE"
+  dietaryPreference String @default("NON_VEGETARIAN") // "VEGAN", "VEGETARIAN", "NON_VEGETARIAN"
   
   // Calculated Nutrition Metrics
   bmr            Float
@@ -162,8 +163,9 @@ model WorkoutLogExercise {
 model Meal {
   id           String   @id @default(cuid())
   name         String
-  category     String   // "BREAKFAST", "LUNCH", "DINNER", "SNACK"
+  category     String   // "BREAKFAST", "LUNCH", "DINNER", "PRE_WORKOUT", "POST_WORKOUT", "SNACK"
   goalType     String   // "BULK", "CUT", "ANY"
+  dietType     String   @default("NON_VEGETARIAN") // "VEGAN", "VEGETARIAN", "NON_VEGETARIAN", "ANY"
   calories     Int
   proteinGrams Float
   carbsGrams   Float

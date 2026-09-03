@@ -3,7 +3,7 @@ import { ENV } from './config/env.js';
 
 const PORT = ENV.PORT;
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`====================================================`);
   console.log(`🚀 Fitness Arena Backend Server running!`);
   console.log(`📡 Local URL: http://localhost:${PORT}`);

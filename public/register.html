@@ -294,6 +294,15 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label for="dietaryPreference">Dietary Preference</label>
+          <select id="dietaryPreference" required>
+            <option value="VEGETARIAN">🥗 Vegetarian (Paneer, Dairy, Whey, Grains)</option>
+            <option value="VEGAN">🌱 Vegan (100% Plant-Based, Tofu, Soya, Lentils)</option>
+            <option value="NON_VEGETARIAN" selected>🥩 Non-Vegetarian (Chicken, Fish, Eggs & All)</option>
+          </select>
+        </div>
+
         <button type="submit" id="submitBtn" class="btn">
           Create Account & Enter Arena 🔥
         </button>
@@ -337,6 +346,7 @@
         currentWeightKg: parseFloat(document.getElementById('currentWeightKg').value),
         goal: document.getElementById('goal').value,
         activityLevel: document.getElementById('activityLevel').value,
+        dietaryPreference: document.getElementById('dietaryPreference').value,
       };
 
       try {

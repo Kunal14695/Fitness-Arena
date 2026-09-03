@@ -9,7 +9,7 @@ const router = Router();
 
 const logMealSchema = z.object({
   mealName: z.string().min(2),
-  category: z.enum(['BREAKFAST', 'LUNCH', 'DINNER', 'SNACK']),
+  category: z.enum(['BREAKFAST', 'LUNCH', 'DINNER', 'PRE_WORKOUT', 'POST_WORKOUT', 'SNACK']),
   calories: z.number().int().positive(),
   proteinGrams: z.number().nonnegative(),
   carbsGrams: z.number().nonnegative(),
@@ -22,10 +22,16 @@ const logMealSchema = z.object({
  */
 router.get('/meals', async (req, res, next): Promise<void> => {
   try {
-    const { category, goalType } = req.query;
+    const { category, goalType, dietType } = req.query;
     const where: any = {};
     if (category) where.category = String(category).toUpperCase();
     if (goalType) where.goalType = { in: [String(goalType).toUpperCase(), 'ANY'] };
+    if (dietType) {
+      const diet = String(dietType).toUpperCase();
+      if (diet === 'VEGAN') where.dietType = { in: ['VEGAN', 'ANY'] };
+      else if (diet === 'VEGETARIAN') where.dietType = { in: ['VEGAN', 'VEGETARIAN', 'ANY'] };
+      else where.dietType = { in: [diet, 'ANY'] };
+    }
 
     const meals = await prisma.meal.findMany({ where });
     res.json({
@@ -42,7 +48,7 @@ router.get('/meals', async (req, res, next): Promise<void> => {
 
 /**
  * @route GET /api/nutrition/daily-plan
- * @desc Generate a full-day meal plan (Breakfast, Lunch, Dinner, Snack) customized to user's weight, goal (Bulk vs Cut), and calculated calories
+ * @desc Generate a customized full-day meal plan (Breakfast, Lunch, Pre-Workout, Post-Workout, Dinner, Snack) tailored to user's weight, goal, and dietary preference (Vegan, Vegetarian, Non-Veg)
  */
 router.get('/daily-plan', authenticateToken, async (req: AuthenticatedRequest, res: Response, next): Promise<void> => {
   try {
@@ -52,7 +58,7 @@ router.get('/daily-plan', authenticateToken, async (req: AuthenticatedRequest, r
     if (!profile) {
       res.status(400).json({
         success: false,
-        error: 'Please complete your biometrics profile (height, weight, goal) first at PUT /api/profile',
+        error: 'Please complete your biometrics profile (height, weight, goal, diet) first at PUT /api/profile',
       });
       return;
     }
@@ -60,29 +66,49 @@ router.get('/daily-plan', authenticateToken, async (req: AuthenticatedRequest, r
     const userGoal = profile.goal; // "BULK", "CUT", "MAINTAIN"
     const goalFilter = userGoal === 'MAINTAIN' ? ['ANY', 'BULK', 'CUT'] : [userGoal, 'ANY'];
 
-    // Retrieve meals for each category matching the goal
-    const [breakfasts, lunches, dinners, snacks] = await Promise.all([
+    // Dietary preference filtering: Vegan vs Vegetarian vs Non-Vegetarian
+    const dietPref = profile.dietaryPreference || 'NON_VEGETARIAN';
+    let dietFilter: string[] = ['ANY'];
+    if (dietPref === 'VEGAN') {
+      dietFilter = ['VEGAN', 'ANY'];
+    } else if (dietPref === 'VEGETARIAN') {
+      dietFilter = ['VEGETARIAN', 'VEGAN', 'ANY'];
+    } else {
+      // Non-Vegetarian can consume all diet types
+      dietFilter = ['NON_VEGETARIAN', 'VEGETARIAN', 'VEGAN', 'ANY'];
+    }
+
+    // Retrieve meals for each category matching goal and diet preference
+    const [breakfasts, lunches, preWorkouts, postWorkouts, dinners, snacks] = await Promise.all([
       prisma.meal.findMany({
-        where: { category: 'BREAKFAST', goalType: { in: goalFilter } },
+        where: { category: 'BREAKFAST', goalType: { in: goalFilter }, dietType: { in: dietFilter } },
       }),
       prisma.meal.findMany({
-        where: { category: 'LUNCH', goalType: { in: goalFilter } },
+        where: { category: 'LUNCH', goalType: { in: goalFilter }, dietType: { in: dietFilter } },
       }),
       prisma.meal.findMany({
-        where: { category: 'DINNER', goalType: { in: goalFilter } },
+        where: { category: 'PRE_WORKOUT', goalType: { in: goalFilter }, dietType: { in: dietFilter } },
       }),
       prisma.meal.findMany({
-        where: { category: 'SNACK', goalType: { in: goalFilter } },
+        where: { category: 'POST_WORKOUT', goalType: { in: goalFilter }, dietType: { in: dietFilter } },
+      }),
+      prisma.meal.findMany({
+        where: { category: 'DINNER', goalType: { in: goalFilter }, dietType: { in: dietFilter } },
+      }),
+      prisma.meal.findMany({
+        where: { category: 'SNACK', goalType: { in: goalFilter }, dietType: { in: dietFilter } },
       }),
     ]);
 
     // Pick top recommended meal for each category
     const breakfast = breakfasts[0] || null;
     const lunch = lunches[0] || null;
+    const preWorkout = preWorkouts[0] || null;
+    const postWorkout = postWorkouts[0] || null;
     const dinner = dinners[0] || null;
     const snack = snacks[0] || null;
 
-    const plannedMeals = [breakfast, lunch, dinner, snack].filter(Boolean);
+    const plannedMeals = [breakfast, lunch, preWorkout, postWorkout, dinner, snack].filter(Boolean);
     const totalPlanCalories = plannedMeals.reduce((acc, m) => acc + (m?.calories || 0), 0);
     const totalPlanProtein = plannedMeals.reduce((acc, m) => acc + (m?.proteinGrams || 0), 0);
     const totalPlanCarbs = plannedMeals.reduce((acc, m) => acc + (m?.carbsGrams || 0), 0);
@@ -95,6 +121,7 @@ router.get('/daily-plan', authenticateToken, async (req: AuthenticatedRequest, r
       success: true,
       data: {
         goal: userGoal,
+        dietaryPreference: dietPref,
         userTargets: {
           targetCalories: profile.targetCalories,
           targetProteinGrams: profile.targetProtein,
@@ -111,6 +138,8 @@ router.get('/daily-plan', authenticateToken, async (req: AuthenticatedRequest, r
         meals: {
           breakfast: parseIngredients(breakfast),
           lunch: parseIngredients(lunch),
+          preWorkout: parseIngredients(preWorkout),
+          postWorkout: parseIngredients(postWorkout),
           dinner: parseIngredients(dinner),
           snack: parseIngredients(snack),
         },
