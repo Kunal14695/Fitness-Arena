@@ -69,6 +69,10 @@ app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(publicDir, 'dashboard.html'));
 });
 
+app.get('/profile', (req, res) => {
+  res.sendFile(path.join(publicDir, 'profile.html'));
+});
+
 // Root: Redirect to register page
 app.get('/', (req, res) => {
   res.redirect('/register');

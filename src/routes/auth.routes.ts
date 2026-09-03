@@ -160,4 +160,76 @@ router.get('/me', authenticateToken, async (req: AuthenticatedRequest, res: Resp
   }
 });
 
+const updateAccountSchema = z.object({
+  name: z.string().min(2).optional(),
+  currentPassword: z.string().optional(),
+  newPassword: z.string().min(6).optional(),
+});
+
+/**
+ * @route PUT /api/auth/update-account
+ * @desc Update username/name or change password
+ */
+router.put(
+  '/update-account',
+  authenticateToken,
+  validateBody(updateAccountSchema),
+  async (req: AuthenticatedRequest, res: Response, next): Promise<void> => {
+    try {
+      const userId = req.user!.userId;
+      const { name, currentPassword, newPassword } = req.body;
+
+      const user = await prisma.user.findUnique({ where: { id: userId } });
+      if (!user) {
+        res.status(404).json({ success: false, error: 'User not found' });
+        return;
+      }
+
+      const updateData: any = {};
+      if (name) updateData.name = name.trim();
+
+      if (newPassword) {
+        if (!currentPassword) {
+          res.status(400).json({
+            success: false,
+            error: 'Current password is required to set a new password',
+          });
+          return;
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword, user.passwordHash);
+        if (!isMatch) {
+          res.status(400).json({
+            success: false,
+            error: 'Current password does not match. Please verify your current password.',
+          });
+          return;
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        updateData.passwordHash = await bcrypt.hash(newPassword, salt);
+      }
+
+      const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: updateData,
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          updatedAt: true,
+        },
+      });
+
+      res.json({
+        success: true,
+        message: 'Account details updated successfully!',
+        data: updatedUser,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export default router;

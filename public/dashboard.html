@@ -71,21 +71,24 @@
       gap: 16px;
     }
 
-    .logout-btn {
-      background: transparent;
+    .profile-nav-btn {
+      background: #1e2433;
       border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      padding: 8px 14px;
+      color: #fff;
+      padding: 8px 16px;
       border-radius: 8px;
       font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
+      font-weight: 700;
+      text-decoration: none;
       transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .logout-btn:hover {
-      color: #fff;
-      border-color: #ef4444;
+    .profile-nav-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
     }
 
     main {
@@ -315,7 +318,7 @@
     </a>
     <div class="nav-user">
       <span id="userNameText" style="font-weight: 600; font-size: 14px;">Athlete</span>
-      <button class="logout-btn" onclick="logout()">Log out</button>
+      <a href="/profile" class="profile-nav-btn">👤 Profile</a>
     </div>
   </nav>
 
