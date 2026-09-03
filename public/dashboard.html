@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitness Arena - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090b0e;
+      --card-bg: #14171f;
+      --card-border: #232a3b;
+      --primary: #ff5722;
+      --primary-hover: #f4511e;
+      --streak-fire: #f97316;
+      --accent-purple: #8b5cf6;
+      --accent-blue: #38bdf8;
+      --accent-green: #10b981;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image: radial-gradient(circle at 50% 0%, rgba(255, 87, 34, 0.08) 0%, transparent 60%);
+    }
+
+    nav {
+      border-bottom: 1px solid var(--card-border);
+      background: rgba(20, 23, 31, 0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--primary);
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logout-btn {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .logout-btn:hover {
+      color: #fff;
+      border-color: #ef4444;
+    }
+
+    main {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 16px;
+      flex: 1;
+    }
+
+    /* Top Stats Grid */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card.streak-card {
+      border-color: rgba(249, 115, 22, 0.4);
+      background: linear-gradient(145deg, #181b24, #1b1614);
+    }
+
+    .stat-card.rank-card {
+      border-color: rgba(139, 92, 246, 0.4);
+      background: linear-gradient(145deg, #181b24, #191424);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .big-number {
+      font-size: 34px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .big-number.fire {
+      color: #f97316;
+    }
+
+    .card-subtext {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: #232a3b;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #8b5cf6, #ec4899);
+      border-radius: 999px;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 860px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .panel h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .macros-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .macro-box {
+      background: #0d0f14;
+      border: 1px solid var(--card-border);
+      padding: 12px 6px;
+      border-radius: 12px;
+    }
+
+    .macro-val {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .macro-lbl {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .meal-item {
+      background: #0d0f14;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .meal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .meal-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 87, 34, 0.2);
+      color: var(--primary);
+    }
+
+    .meal-title {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .meal-macros {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .action-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .checkin-btn {
+      background: #10b981;
+    }
+
+    .checkin-btn:hover {
+      background: #059669;
+    }
+
+    select, input {
+      width: 100%;
+      background: #0d0f14;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px;
+      color: #fff;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/dashboard" class="nav-logo">
+      🏋️‍♂️ Fitness<span>Arena</span>
+    </a>
+    <div class="nav-user">
+      <span id="userNameText" style="font-weight: 600; font-size: 14px;">Athlete</span>
+      <a href="/api/docs" target="_blank" style="color: var(--accent-blue); text-decoration: none; font-size: 13px; font-weight: 600;">Swagger Docs</a>
+      <button class="logout-btn" onclick="logout()">Log out</button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Top Highlights: Duolingo Streak & Rank Tier -->
+    <div class="hero-grid">
+      <!-- Streak Card -->
+      <div class="stat-card streak-card">
+        <div class="card-header">
+          <span class="card-title">🔥 Consistency Streak</span>
+          <span id="freezeBadge" style="font-size: 12px; color: var(--accent-blue);">🛡️ 1 Freeze</span>
+        </div>
+        <div class="big-number fire">
+          <span id="streakDays">0</span>
+          <span style="font-size: 18px; color: var(--text-muted); font-weight: 600;">days</span>
+        </div>
+        <div class="card-subtext" id="streakMsg">Keep logging your workouts to maintain streak!</div>
+        <button id="quickCheckinBtn" class="action-btn checkin-btn" onclick="quickCheckIn()">
+          ⚡ Quick Daily Check-in (+10 XP)
+        </button>
+      </div>
+
+      <!-- Rank Tier Card -->
+      <div class="stat-card rank-card">
+        <div class="card-header">
+          <span class="card-title">🏆 Arena Rank</span>
+          <span id="levelBadge" style="font-size: 12px; color: var(--accent-purple); font-weight: 700;">Level 1</span>
+        </div>
+        <div class="big-number" style="color: #c084fc;">
+          <span id="rankTierText">Novice</span>
+        </div>
+        <div class="card-subtext" id="xpSummary">0 XP earned</div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="xpProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- Calorie & Goal Card -->
+      <div class="stat-card">
+        <div class="card-header">
+          <span class="card-title">🎯 Daily Target</span>
+          <span id="goalBadge" style="font-size: 12px; color: var(--primary); font-weight: 700;">BULK</span>
+        </div>
+        <div class="big-number">
+          <span id="targetCaloriesVal">--</span>
+          <span style="font-size: 18px; color: var(--text-muted); font-weight: 600;">kcal/day</span>
+        </div>
+        <div class="card-subtext" id="tdeeSummary">BMR & TDEE calibrated for your goals</div>
+      </div>
+    </div>
+
+    <!-- Main Content: Meal Plan & Workout Split -->
+    <div class="content-grid">
+      <!-- Nutrition & Meals -->
+      <div class="panel">
+        <h2>🥗 Personalized Daily Meals</h2>
+        
+        <div class="macros-grid">
+          <div class="macro-box">
+            <div class="macro-val" id="macroCal">--</div>
+            <div class="macro-lbl">Calories</div>
+          </div>
+          <div class="macro-box">
+            <div class="macro-val" id="macroPro">--g</div>
+            <div class="macro-lbl">Protein</div>
+          </div>
+          <div class="macro-box">
+            <div class="macro-val" id="macroCarb">--g</div>
+            <div class="macro-lbl">Carbs</div>
+          </div>
+          <div class="macro-box">
+            <div class="macro-val" id="macroFat">--g</div>
+            <div class="macro-lbl">Fats</div>
+          </div>
+        </div>
+
+        <div id="mealsContainer">
+          <p style="color: var(--text-muted); font-size: 14px;">Loading daily meal plan...</p>
+        </div>
+      </div>
+
+      <!-- Workout Logger -->
+      <div class="panel">
+        <h2>🏋️ Log Workout (+50 XP & Streak)</h2>
+        <form id="workoutLogForm" onsubmit="submitWorkout(event)">
+          <label style="font-size: 12px; color: var(--text-muted);">Workout Title</label>
+          <input type="text" id="workoutTitle" value="Chest & Triceps Power" required>
+
+          <label style="font-size: 12px; color: var(--text-muted);">Select Exercise</label>
+          <select id="exerciseSelect" required>
+            <option value="">Loading exercises...</option>
+          </select>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted);">Sets</label>
+              <input type="number" id="sets" value="4" min="1" required>
+            </div>
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted);">Reps</label>
+              <input type="number" id="reps" value="10" min="1" required>
+            </div>
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted);">Weight (kg)</label>
+              <input type="number" id="weightKg" value="70" step="0.5" required>
+            </div>
+          </div>
+
+          <button type="submit" id="logWorkoutBtn" class="action-btn">
+            Log Workout & Claim +50 XP 🔥
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const token = localStorage.getItem('fitness_token');
+    if (!token) {
+      window.location.href = '/register';
+    }
+
+    async function fetchDashboardData() {
+      try {
+        // 1. User & Profile
+        const userRes = await fetch('/api/auth/me', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!userRes.ok) throw new Error('Unauthorized');
+        const userData = await userRes.json();
+        const user = userData.data;
+
+        document.getElementById('userNameText').innerText = user.name;
+        document.getElementById('streakDays').innerText = user.streak?.currentStreak || 0;
+        document.getElementById('freezeBadge').innerText = `🛡️ ${user.streak?.freezeCount || 0} Freezes`;
+
+        // 2. Rank
+        const rankRes = await fetch('/api/rank', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const rankData = await rankRes.json();
+        const r = rankData.data.currentRank;
+        document.getElementById('rankTierText').innerText = `${r.badge}`;
+        document.getElementById('levelBadge').innerText = `Level ${r.level}`;
+        document.getElementById('xpSummary').innerText = `${r.currentXp} XP • Next: ${r.nextTier || 'Max Tier'} (${r.xpNeededForNextTier} XP left)`;
+        document.getElementById('xpProgressBar').style.width = `${r.progressPercent}%`;
+
+        // 3. Nutrition & Meal Plan
+        const planRes = await fetch('/api/nutrition/daily-plan', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const planData = await planRes.json();
+        if (planData.success) {
+          const targets = planData.data.userTargets;
+          document.getElementById('goalBadge').innerText = planData.data.goal;
+          document.getElementById('targetCaloriesVal').innerText = targets.targetCalories;
+          document.getElementById('macroCal').innerText = targets.targetCalories;
+          document.getElementById('macroPro').innerText = `${targets.targetProteinGrams}g`;
+          document.getElementById('macroCarb').innerText = `${targets.targetCarbsGrams}g`;
+          document.getElementById('macroFat').innerText = `${targets.targetFatsGrams}g`;
+
+          const meals = planData.data.meals;
+          let mealHtml = '';
+          const mealList = [
+            { cat: 'Breakfast', m: meals.breakfast },
+            { cat: 'Lunch', m: meals.lunch },
+            { cat: 'Dinner', m: meals.dinner },
+            { cat: 'Snack', m: meals.snack },
+          ];
+
+          mealList.forEach(item => {
+            if (item.m) {
+              mealHtml += `
+                <div class="meal-item">
+                  <div class="meal-header">
+                    <div class="meal-title">${item.m.name}</div>
+                    <span class="meal-tag">${item.cat}</span>
+                  </div>
+                  <div class="meal-macros">
+                    🔥 ${item.m.calories} kcal • 🥩 ${item.m.proteinGrams}g Protein • 🌾 ${item.m.carbsGrams}g Carbs • 🥑 ${item.m.fatsGrams}g Fats
+                  </div>
+                </div>
+              `;
+            }
+          });
+          document.getElementById('mealsContainer').innerHTML = mealHtml;
+        }
+
+        // 4. Exercises list
+        const exRes = await fetch('/api/workouts/exercises');
+        const exData = await exRes.json();
+        if (exData.success) {
+          const select = document.getElementById('exerciseSelect');
+          select.innerHTML = exData.data.map(ex => `<option value="${ex.id}">${ex.name} (${ex.muscleGroup})</option>`).join('');
+        }
+
+      } catch (err) {
+        console.error(err);
+        localStorage.removeItem('fitness_token');
+        window.location.href = '/register';
+      }
+    }
+
+    async function quickCheckIn() {
+      try {
+        const res = await fetch('/api/streak/check-in', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ isRestDay: false })
+        });
+        const data = await res.json();
+        alert(data.message || 'Streak checked in!');
+        fetchDashboardData();
+      } catch (err) {
+        alert('Check-in failed');
+      }
+    }
+
+    async function submitWorkout(e) {
+      e.preventDefault();
+      const btn = document.getElementById('logWorkoutBtn');
+      btn.disabled = true;
+      btn.innerText = 'Logging session...';
+
+      const payload = {
+        title: document.getElementById('workoutTitle').value,
+        durationMinutes: 45,
+        exercises: [{
+          exerciseId: document.getElementById('exerciseSelect').value,
+          setsCompleted: parseInt(document.getElementById('sets').value, 10),
+          repsCompleted: parseInt(document.getElementById('reps').value, 10),
+          weightUsedKg: parseFloat(document.getElementById('weightKg').value),
+        }]
+      };
+
+      try {
+        const res = await fetch('/api/workouts/log', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to log workout');
+
+        alert(`🎉 Workout Logged!\n🔥 Streak: ${data.data.streak.currentStreak} Days\n⭐ XP Earned: +${data.data.gamification.xpAwardedThisSession} XP!\n🏆 Rank: ${data.data.gamification.badge}`);
+        btn.disabled = false;
+        btn.innerText = 'Log Workout & Claim +50 XP 🔥';
+        fetchDashboardData();
+      } catch (err) {
+        alert(err.message);
+        btn.disabled = false;
+        btn.innerText = 'Log Workout & Claim +50 XP 🔥';
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('fitness_token');
+      window.location.href = '/login';
+    }
+
+    fetchDashboardData();
+  </script>
+</body>
+</html>

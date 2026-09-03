@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitness Arena - Register</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0d0f12;
+      --card-bg: #161a22;
+      --card-border: #252c3b;
+      --primary: #ff5722;
+      --primary-hover: #f4511e;
+      --accent-glow: rgba(255, 87, 34, 0.25);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      background-image: radial-gradient(circle at top, rgba(255, 87, 34, 0.08) 0%, transparent 70%);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #fff;
+      text-decoration: none;
+      margin-bottom: 8px;
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .header p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input, select {
+      width: 100%;
+      background: #0f1218;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 22px 0 14px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--card-border);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--primary), #e64a19);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 20px -6px rgba(255, 87, 34, 0.5);
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, var(--primary-hover), #d84315);
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .alert-error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+    }
+
+    .alert-success {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid #10b981;
+      color: #6ee7b7;
+    }
+
+    .footer-links {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .footer-links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    .features-pill {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .pill-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <a href="/" class="logo">
+        🏋️‍♂️ Fitness<span>Arena</span>
+      </a>
+      <p>Build your weekly routine, crush streaks & conquer your physique</p>
+    </div>
+
+    <div class="card">
+      <div id="errorAlert" class="alert alert-error"></div>
+      <div id="successAlert" class="alert alert-success"></div>
+
+      <form id="registerForm">
+        <!-- Account Info -->
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" required placeholder="e.g. John Doe">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" required placeholder="name@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password (min 6 characters)</label>
+          <input type="password" id="password" required minlength="6" placeholder="••••••••">
+        </div>
+
+        <!-- Biometrics & Body Goals -->
+        <div class="section-title">⚖️ Biometrics & Body Goal</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" required min="14" max="100" value="24" placeholder="24">
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" required>
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="heightCm">Height (cm)</label>
+            <input type="number" id="heightCm" required min="100" max="250" value="178" placeholder="178">
+          </div>
+          <div class="form-group">
+            <label for="currentWeightKg">Weight (kg)</label>
+            <input type="number" id="currentWeightKg" step="0.5" required min="30" max="300" value="75" placeholder="75">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="goal">Fitness Goal</label>
+            <select id="goal" required>
+              <option value="BULK">💪 Bulking (+400 kcal surplus)</option>
+              <option value="CUT">🔥 Cutting (-500 kcal deficit)</option>
+              <option value="MAINTAIN">⚖️ Maintenance (Balance)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="activityLevel">Activity Level</label>
+            <select id="activityLevel" required>
+              <option value="SEDENTARY">Sedentary (Desk Job)</option>
+              <option value="LIGHT">Light (1-2 days/week)</option>
+              <option value="MODERATE" selected>Moderate (3-5 days/week)</option>
+              <option value="VERY_ACTIVE">Very Active (6-7 days/week)</option>
+              <option value="EXTREMELY_ACTIVE">Extremely Active (2x/day)</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn">
+          Create Account & Enter Arena 🔥
+        </button>
+      </form>
+
+      <div class="footer-links">
+        Already registered? <a href="/login">Log in here</a> | <a href="/api/docs" target="_blank">Swagger API</a>
+      </div>
+
+      <div class="features-pill">
+        <div class="pill-item">🔥 Duolingo Streaks</div>
+        <div class="pill-item">🥗 Macro Plans</div>
+        <div class="pill-item">🏆 Rank Tiers</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorAlert = document.getElementById('errorAlert');
+    const successAlert = document.getElementById('successAlert');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorAlert.style.display = 'none';
+      successAlert.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Setting up your profile & macros...';
+
+      const payload = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value,
+      };
+
+      const biometrics = {
+        age: parseInt(document.getElementById('age').value, 10),
+        gender: document.getElementById('gender').value,
+        heightCm: parseFloat(document.getElementById('heightCm').value),
+        currentWeightKg: parseFloat(document.getElementById('currentWeightKg').value),
+        goal: document.getElementById('goal').value,
+        activityLevel: document.getElementById('activityLevel').value,
+      };
+
+      try {
+        // 1. Register User
+        const regRes = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const regData = await regRes.json();
+        if (!regRes.ok) {
+          throw new Error(regData.error || (regData.details && regData.details.join(', ')) || 'Registration failed');
+        }
+
+        const token = regData.data.token;
+        localStorage.setItem('fitness_token', token);
+
+        // 2. Set Biometrics & Calculate Macros
+        const bioRes = await fetch('/api/profile', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(biometrics)
+        });
+
+        const bioData = await bioRes.json();
+        if (!bioRes.ok) {
+          throw new Error(bioData.error || 'Failed to save biometrics');
+        }
+
+        successAlert.innerText = 'Account & Biometrics initialized! Redirecting to your Arena Dashboard...';
+        successAlert.style.display = 'block';
+
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 1200);
+
+      } catch (err) {
+        errorAlert.innerText = err.message;
+        errorAlert.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Create Account & Enter Arena 🔥';
+      }
+    });
+  </script>
+</body>
+</html>
