@@ -1,0 +1,187 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String          @id @default(cuid())
+  email        String          @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  profile      Profile?
+  streak       Streak?
+  rank         UserRank?
+  routines     WorkoutRoutine[]
+  workoutLogs  WorkoutLog[]
+  mealLogs     MealLog[]
+}
+
+model Profile {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  age            Int
+  gender         String   // "MALE", "FEMALE", "OTHER"
+  heightCm       Float
+  currentWeightKg Float
+  targetWeightKg Float
+  goal           String   // "BULK", "CUT", "MAINTAIN"
+  activityLevel  String   // "SEDENTARY", "LIGHT", "MODERATE", "VERY_ACTIVE", "EXTREMELY_ACTIVE"
+  
+  // Calculated Nutrition Metrics
+  bmr            Float
+  tdee           Float
+  targetCalories Int
+  targetProtein  Float    // in grams
+  targetCarbs    Float    // in grams
+  targetFats     Float    // in grams
+
+  updatedAt      DateTime @updatedAt
+}
+
+model Streak {
+  id             String    @id @default(cuid())
+  userId         String    @unique
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  currentStreak  Int       @default(0)
+  longestStreak  Int       @default(0)
+  lastActiveDate DateTime?
+  freezeCount    Int       @default(1) // Freezes available to prevent breaking streak
+  
+  updatedAt      DateTime  @updatedAt
+}
+
+model UserRank {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  xp             Int      @default(0)
+  tier           String   @default("Novice")     // Novice, Beginner, Consistent, Intermediate, Advanced, Elite, Titan
+  badge          String   @default("Iron Novice")
+  level          Int      @default(1)
+
+  updatedAt      DateTime @updatedAt
+}
+
+model WorkoutRoutine {
+  id          String         @id @default(cuid())
+  userId      String
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title       String
+  description String?
+  isDefault   Boolean        @default(false)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  days        RoutineDay[]
+  logs        WorkoutLog[]
+}
+
+model RoutineDay {
+  id               String            @id @default(cuid())
+  routineId        String
+  routine          WorkoutRoutine    @relation(fields: [routineId], references: [id], onDelete: Cascade)
+  
+  dayOfWeek        String            // "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"
+  title            String            // e.g., "Push - Chest, Shoulders, Triceps"
+  isRestDay        Boolean           @default(false)
+  
+  exercises        RoutineExercise[]
+}
+
+model Exercise {
+  id                 String            @id @default(cuid())
+  name               String            @unique
+  muscleGroup        String            // "CHEST", "BACK", "LEGS", "SHOULDERS", "ARMS", "CORE"
+  equipment          String            // "BARBELL", "DUMBBELL", "BODYWEIGHT", "MACHINE", "CABLES"
+  description        String?
+  instructions       String?
+
+  routineExercises   RoutineExercise[]
+  workoutLogExercises WorkoutLogExercise[]
+}
+
+model RoutineExercise {
+  id             String      @id @default(cuid())
+  routineDayId   String
+  routineDay     RoutineDay  @relation(fields: [routineDayId], references: [id], onDelete: Cascade)
+  
+  exerciseId     String
+  exercise       Exercise    @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  
+  orderIndex     Int         @default(0)
+  targetSets     Int         @default(3)
+  targetReps     Int         @default(10)
+  targetWeightKg Float?
+  restSeconds    Int         @default(60)
+}
+
+model WorkoutLog {
+  id                   String               @id @default(cuid())
+  userId               String
+  user                 User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  routineId            String?
+  routine              WorkoutRoutine?      @relation(fields: [routineId], references: [id], onDelete: SetNull)
+  
+  date                 DateTime             @default(now())
+  title                String
+  completed            Boolean              @default(true)
+  notes                String?
+  durationMinutes      Int?
+  xpAwarded            Int                  @default(50)
+  
+  exercisesCompleted   WorkoutLogExercise[]
+  createdAt            DateTime             @default(now())
+}
+
+model WorkoutLogExercise {
+  id             String      @id @default(cuid())
+  workoutLogId   String
+  workoutLog     WorkoutLog  @relation(fields: [workoutLogId], references: [id], onDelete: Cascade)
+  
+  exerciseId     String
+  exercise       Exercise    @relation(fields: [exerciseId], references: [id])
+  
+  setsCompleted  Int
+  repsCompleted  Int
+  weightUsedKg   Float?
+}
+
+model Meal {
+  id           String   @id @default(cuid())
+  name         String
+  category     String   // "BREAKFAST", "LUNCH", "DINNER", "SNACK"
+  goalType     String   // "BULK", "CUT", "ANY"
+  calories     Int
+  proteinGrams Float
+  carbsGrams   Float
+  fatsGrams    Float
+  ingredients  String   // JSON string or comma-separated list
+  recipe       String?
+}
+
+model MealLog {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  mealName     String
+  category     String   // "BREAKFAST", "LUNCH", "DINNER", "SNACK"
+  calories     Int
+  proteinGrams Float
+  carbsGrams   Float
+  fatsGrams    Float
+  loggedAt     DateTime @default(now())
+}

@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: fitness-arena-backend
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build && npm run prisma:push && npm run prisma:seed
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        value: file:./dev.db
