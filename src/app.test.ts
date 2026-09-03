@@ -22,7 +22,7 @@ describe('Fitness Arena API Integration Tests', () => {
     const res = await request(app).get('/api/health');
     expect(res.status).toBe(200);
     expect(res.body.status).toBe('healthy');
-    expect(res.body.docs).toBe('/api/docs');
+    expect(res.body.service).toBe('Fitness Arena Backend API');
   });
 
   it('POST /api/auth/register -> creates new account with streak and rank initialized', async () => {

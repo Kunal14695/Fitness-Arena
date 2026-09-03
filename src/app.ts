@@ -25,20 +25,34 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(publicDir));
 
-// API Documentation via Swagger UI
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+// Restricted API Documentation (private and protected)
+const requireDocsAuth = (req: express.Request, res: express.Response, next: express.NextFunction): void => {
+  const secretKey = req.query.key || req.headers['x-admin-key'];
+  const allowedKey = process.env.DOCS_SECRET_KEY || 'arena_dev_admin_2026';
+
+  // Allowed only with secret key in production/public, or local development with key
+  if (process.env.NODE_ENV === 'development' || secretKey === allowedKey) {
+    next();
+    return;
+  }
+  res.status(403).json({
+    success: false,
+    error: 'Access Denied: API documentation is private and restricted.',
+  });
+};
+
+app.use('/api/docs', requireDocsAuth, swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customSiteTitle: 'Fitness Arena API Docs',
   customCss: '.swagger-ui .topbar { display: none }',
 }));
 
-// Health Check Endpoint (useful for cloud pinging & monitoring on Render/Railway)
+// Health Check Endpoint (clean monitoring)
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
     service: 'Fitness Arena Backend API',
     version: '1.0.0',
-    docs: '/api/docs',
   });
 });
 
