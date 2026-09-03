@@ -18,7 +18,7 @@
    - Create 7-day personalized workout routines (e.g., Push/Pull/Legs, Upper/Lower).
    - Pre-populated library of compound and isolation exercises (Chest, Back, Legs, Shoulders, Arms, Core).
    - Add custom exercises with target sets, reps, weight, and rest time.
-4. **Duolingo-style Streak & Consistency Engine**
+4. **Gym Streaks & Consistency Engine**
    - Daily active workout tracking and check-ins.
    - Streak freeze shields (`freezeCount`) to protect your streak if you miss a day.
    - Scheduled Rest Day recognition (rest days don't break streaks).

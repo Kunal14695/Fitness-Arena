@@ -321,19 +321,19 @@
   </nav>
 
   <main>
-    <!-- Top Highlights: Duolingo Streak & Rank Tier -->
+    <!-- Top Highlights: Gym Streak & Rank Tier -->
     <div class="hero-grid">
       <!-- Streak Card -->
       <div class="stat-card streak-card">
         <div class="card-header">
-          <span class="card-title">🔥 Consistency Streak</span>
+          <span class="card-title">🔥 Gym Streak</span>
           <span id="freezeBadge" style="font-size: 12px; color: var(--accent-blue);">🛡️ 1 Freeze</span>
         </div>
         <div class="big-number fire">
           <span id="streakDays">0</span>
           <span style="font-size: 18px; color: var(--text-muted); font-weight: 600;">days</span>
         </div>
-        <div class="card-subtext" id="streakMsg">Keep logging your workouts to maintain streak!</div>
+        <div class="card-subtext" id="streakMsg">Keep logging your workouts to maintain your gym streak!</div>
         <button id="quickCheckinBtn" class="action-btn checkin-btn" onclick="quickCheckIn()">
           ⚡ Quick Daily Check-in (+10 XP)
         </button>
@@ -567,7 +567,7 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Failed to log workout');
 
-        alert(`🎉 Workout Logged!\n🔥 Streak: ${data.data.streak.currentStreak} Days\n⭐ XP Earned: +${data.data.gamification.xpAwardedThisSession} XP!\n🏆 Rank: ${data.data.gamification.badge}`);
+        alert(`🎉 Workout Logged!\n🔥 Gym Streak: ${data.data.streak.currentStreak} Days\n⭐ XP Earned: +${data.data.gamification.xpAwardedThisSession} XP!\n🏆 Rank: ${data.data.gamification.badge}`);
         btn.disabled = false;
         btn.innerText = 'Log Workout & Claim +50 XP 🔥';
         fetchDashboardData();

@@ -11,7 +11,7 @@ const swaggerOptions: swaggerJsdoc.Options = {
 Welcome to the Fitness Arena backend! This API provides:
 - **Biometrics & TDEE Calorie Engine**: Dynamic BMR, TDEE, surplus (Bulking) and deficit (Cutting) macro targets.
 - **Weekly Workout Split Builder**: Personalized 7-day routine creation, exercises library, and logging.
-- **Duolingo-style Streaks**: Daily consistency tracking, streak freezes, rest-day preservation, and longest streaks.
+- **Gym Streaks**: Daily consistency tracking, streak freezes, rest-day preservation, and longest streaks.
 - **Personalized Daily Meal Plans**: Full day diet plans matching calculated calorie and macronutrient requirements.
 - **Gamified Ranks & Leaderboard**: XP progression from Novice (Iron) to Titan with badges and global ranking.
 
