@@ -4,6 +4,7 @@ import { prisma } from '../config/prisma.js';
 import { authenticateToken, AuthenticatedRequest } from '../middleware/auth.js';
 import { validateBody } from '../middleware/validate.js';
 import { calculateUserRank } from '../utils/gamification.js';
+import { generateGeminiMealPlan } from '../services/geminiNutrition.service.js';
 
 const router = Router();
 
@@ -65,9 +66,65 @@ router.get('/daily-plan', authenticateToken, async (req: AuthenticatedRequest, r
 
     const userGoal = profile.goal; // "BULK", "CUT", "MAINTAIN"
     const goalFilter = userGoal === 'MAINTAIN' ? ['ANY', 'BULK', 'CUT'] : [userGoal, 'ANY'];
-
-    // Dietary preference filtering: Vegan vs Vegetarian vs Non-Vegetarian
     const dietPref = profile.dietaryPreference || 'NON_VEGETARIAN';
+
+    // 1. Try Generating with Gemini AI for realistic culinary meals
+    const refresh = req.query.refresh === 'true';
+    const cacheKey = `${userId}_${userGoal}_${dietPref}_${profile.targetCalories}`;
+
+    const aiPlan = await generateGeminiMealPlan(cacheKey, {
+      goal: userGoal,
+      dietaryPreference: dietPref,
+      targetCalories: profile.targetCalories,
+      targetProtein: profile.targetProtein,
+      targetCarbs: profile.targetCarbs,
+      targetFats: profile.targetFats,
+      currentWeightKg: profile.currentWeightKg,
+      heightCm: profile.heightCm,
+    }, refresh);
+
+    if (aiPlan) {
+      const plannedMeals = [
+        aiPlan.breakfast,
+        aiPlan.lunch,
+        aiPlan.preWorkout,
+        aiPlan.postWorkout,
+        aiPlan.dinner,
+        aiPlan.snack,
+      ].filter(Boolean);
+
+      const totalPlanCalories = plannedMeals.reduce((acc, m) => acc + (m?.calories || 0), 0);
+      const totalPlanProtein = Math.round(plannedMeals.reduce((acc, m) => acc + (m?.proteinGrams || 0), 0));
+      const totalPlanCarbs = Math.round(plannedMeals.reduce((acc, m) => acc + (m?.carbsGrams || 0), 0));
+      const totalPlanFats = Math.round(plannedMeals.reduce((acc, m) => acc + (m?.fatsGrams || 0), 0));
+
+      res.json({
+        success: true,
+        source: 'GEMINI_AI',
+        data: {
+          goal: userGoal,
+          dietaryPreference: dietPref,
+          isAiGenerated: true,
+          userTargets: {
+            targetCalories: profile.targetCalories,
+            targetProteinGrams: profile.targetProtein,
+            targetCarbsGrams: profile.targetCarbs,
+            targetFatsGrams: profile.targetFats,
+          },
+          planSummary: {
+            totalPlanCalories,
+            totalPlanProteinGrams: totalPlanProtein,
+            totalPlanCarbsGrams: totalPlanCarbs,
+            totalPlanFatsGrams: totalPlanFats,
+            caloricDifference: totalPlanCalories - profile.targetCalories,
+          },
+          meals: aiPlan,
+        },
+      });
+      return;
+    }
+
+    // 2. Database Fallback (if Gemini key is unavailable or throttled)
     let dietFilter: string[] = ['ANY'];
     if (dietPref === 'VEGAN') {
       dietFilter = ['VEGAN', 'ANY'];

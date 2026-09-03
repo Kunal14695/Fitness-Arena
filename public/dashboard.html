@@ -372,9 +372,12 @@
     <div class="content-grid">
       <!-- Nutrition & Meals -->
       <div class="panel">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-          <h2 style="margin-bottom: 0;">🥗 Personalized Daily Meals</h2>
-          <span id="dietBadge" style="font-size: 12px; padding: 4px 10px; border-radius: 999px; background: rgba(16, 185, 129, 0.2); color: var(--accent-green); font-weight: 700;">Diet Plan</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+          <h2 style="margin-bottom: 0;">🥗 Daily Meals <span id="aiBadge" style="font-size: 11px; padding: 3px 8px; border-radius: 999px; background: rgba(56, 189, 248, 0.2); color: #38bdf8; font-weight: 700; vertical-align: middle;">✨ Gemini AI</span></h2>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span id="dietBadge" style="font-size: 12px; padding: 4px 10px; border-radius: 999px; background: rgba(16, 185, 129, 0.2); color: var(--accent-green); font-weight: 700;">Diet Plan</span>
+            <button onclick="refreshMeals()" id="refreshMealsBtn" style="background: #232a3b; border: 1px solid var(--card-border); color: #fff; border-radius: 8px; padding: 4px 10px; font-size: 12px; cursor: pointer; font-weight: 600;">🔄 Regenerate</button>
+          </div>
         </div>
         
         <div class="macros-grid">
@@ -442,7 +445,7 @@
       window.location.href = '/register';
     }
 
-    async function fetchDashboardData() {
+    async function fetchDashboardData(forceRefresh = false) {
       try {
         // 1. User & Profile
         const userRes = await fetch('/api/auth/me', {
@@ -467,8 +470,9 @@
         document.getElementById('xpSummary').innerText = `${r.currentXp} XP • Next: ${r.nextTier || 'Max Tier'} (${r.xpNeededForNextTier} XP left)`;
         document.getElementById('xpProgressBar').style.width = `${r.progressPercent}%`;
 
-        // 3. Nutrition & Meal Plan
-        const planRes = await fetch('/api/nutrition/daily-plan', {
+        // 3. Nutrition & Meal Plan (AI Generated via Gemini)
+        const planUrl = forceRefresh ? '/api/nutrition/daily-plan?refresh=true' : '/api/nutrition/daily-plan';
+        const planRes = await fetch(planUrl, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const planData = await planRes.json();
@@ -481,6 +485,10 @@
             NON_VEGETARIAN: '🥩 Non-Veg Diet',
           };
           document.getElementById('dietBadge').innerText = dietLabels[dietPref] || 'Diet Plan';
+          const aiBadge = document.getElementById('aiBadge');
+          if (aiBadge) {
+            aiBadge.style.display = planData.data.isAiGenerated ? 'inline-block' : 'none';
+          }
 
           document.getElementById('goalBadge').innerText = planData.data.goal;
           document.getElementById('targetCaloriesVal').innerText = targets.targetCalories;
@@ -512,7 +520,8 @@
                   <div class="meal-macros">
                     🔥 <strong>${item.m.calories} kcal</strong> &nbsp;|&nbsp; 🥩 <strong>${item.m.proteinGrams}g</strong> Pro &nbsp;|&nbsp; 🌾 <strong>${item.m.carbsGrams}g</strong> Carb &nbsp;|&nbsp; 🥑 <strong>${item.m.fatsGrams}g</strong> Fat
                   </div>
-                  ${ingredientsList ? `<div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">🥣 <em>${ingredientsList}</em></div>` : ''}
+                  ${ingredientsList ? `<div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">🥣 <strong>Ingredients:</strong> ${ingredientsList}</div>` : ''}
+                  ${item.m.recipe ? `<div style="font-size: 11px; color: #a5b4fc; margin-top: 4px; line-height: 1.4;">👨‍🍳 <strong>Prep:</strong> ${item.m.recipe}</div>` : ''}
                 </div>
               `;
             }
@@ -533,6 +542,15 @@
         localStorage.removeItem('fitness_token');
         window.location.href = '/register';
       }
+    }
+
+    async function refreshMeals() {
+      const btn = document.getElementById('refreshMealsBtn');
+      btn.innerText = '✨ Generating...';
+      btn.disabled = true;
+      await fetchDashboardData(true);
+      btn.innerText = '🔄 Regenerate';
+      btn.disabled = false;
     }
 
     async function quickCheckIn() {

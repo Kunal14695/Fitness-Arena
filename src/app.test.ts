@@ -161,7 +161,7 @@ describe('Fitness Arena API Integration Tests', () => {
     expect(res.body.data.meals.breakfast).toBeDefined();
     expect(res.body.data.meals.lunch).toBeDefined();
     expect(res.body.data.meals.dinner).toBeDefined();
-  });
+  }, 15000);
 
   it('GET /api/rank -> returns tier progression and badges', async () => {
     const res = await request(app)
