@@ -223,7 +223,11 @@
         }
 
         localStorage.setItem('fitness_token', data.data.token);
-        window.location.href = '/dashboard';
+        if (!data.data.user || !data.data.user.profile) {
+          window.location.href = '/onboarding';
+        } else {
+          window.location.href = '/dashboard';
+        }
       } catch (err) {
         errorAlert.innerText = err.message;
         errorAlert.style.display = 'block';

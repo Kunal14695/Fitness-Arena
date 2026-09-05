@@ -38,6 +38,22 @@ describe('Fitness Arena API Integration Tests', () => {
     authToken = res.body.data.token;
   });
 
+  it('POST /api/auth/register -> supports simple registration with only email and password', async () => {
+    const simpleEmail = `simple_${Date.now()}@arena.com`;
+    const res = await request(app).post('/api/auth/register').send({
+      email: simpleEmail,
+      password: 'SimplePassword123!',
+    });
+
+    expect(res.status).toBe(201);
+    expect(res.body.success).toBe(true);
+    expect(res.body.data.user.name).toBe(simpleEmail.split('@')[0]);
+    expect(res.body.data.token).toBeDefined();
+
+    // Clean up
+    await prisma.user.delete({ where: { email: simpleEmail } });
+  });
+
   it('POST /api/auth/login -> verifies credentials and issues token', async () => {
     const res = await request(app).post('/api/auth/login').send({
       email: testEmail,
@@ -180,5 +196,21 @@ describe('Fitness Arena API Integration Tests', () => {
     expect(res.body.success).toBe(true);
     expect(res.body.data.length).toBeGreaterThan(0);
     expect(res.body.data[0].position).toBe(1);
+  });
+
+  it('POST /api/chat -> Coach Arena answers fitness question with personalized context', async () => {
+    const res = await request(app)
+      .post('/api/chat')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        message: 'How should I hit my protein goal today?',
+        history: [],
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.data.reply).toBeDefined();
+    expect(res.body.data.role).toBe('model');
+    expect(res.body.data.reply.length).toBeGreaterThan(10);
   });
 });

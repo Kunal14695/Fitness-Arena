@@ -71,24 +71,29 @@
       gap: 16px;
     }
 
-    .profile-nav-btn {
-      background: #1e2433;
+    .user-name-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #181e2b;
       border: 1px solid var(--card-border);
       color: #fff;
       padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 13px;
+      border-radius: 10px;
+      font-size: 13.5px;
       font-weight: 700;
       text-decoration: none;
-      transition: all 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
-    .profile-nav-btn:hover {
-      background: var(--primary);
+    .user-name-btn:hover {
+      background: rgba(255, 87, 34, 0.18);
       border-color: var(--primary);
+      color: #ff8a65;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(255, 87, 34, 0.3);
     }
 
     main {
@@ -308,6 +313,960 @@
       font-size: 14px;
       margin-bottom: 10px;
     }
+
+    /* ====================================================
+       AI COACH ARENA - PREMIUM FLOATING WIDGET
+       ==================================================== */
+    .floating-widget-wrapper {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    /* Floating Callout Speech Bubble */
+    .floating-callout {
+      pointer-events: auto;
+      background: rgba(20, 24, 34, 0.95);
+      border: 1px solid rgba(255, 87, 34, 0.4);
+      backdrop-filter: blur(16px);
+      padding: 10px 16px;
+      border-radius: 16px;
+      box-shadow: 0 14px 32px -6px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 87, 34, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: floatHint 4s ease-in-out infinite;
+      user-select: none;
+    }
+
+    .floating-callout:hover {
+      transform: translateY(-3px) scale(1.02);
+      border-color: var(--primary);
+      box-shadow: 0 18px 36px -4px rgba(255, 87, 34, 0.35);
+    }
+
+    @keyframes floatHint {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .callout-avatar {
+      font-size: 20px;
+      background: rgba(255, 87, 34, 0.15);
+      padding: 6px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .callout-text {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .callout-text strong {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .callout-text span {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .callout-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      margin-left: 2px;
+      transition: all 0.2s;
+    }
+
+    .callout-close:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Floating Circular Button (FAB) */
+    .floating-fab {
+      pointer-events: auto;
+      position: relative;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff5722, #e64a19);
+      border: none;
+      color: #fff;
+      font-size: 26px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px -4px rgba(255, 87, 34, 0.65), 0 0 0 2px rgba(255, 87, 34, 0.3);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .floating-fab:hover {
+      transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 16px 36px -2px rgba(255, 87, 34, 0.8), 0 0 0 4px rgba(255, 87, 34, 0.4);
+    }
+
+    .floating-fab .open-icon {
+      display: block;
+      transition: transform 0.3s;
+    }
+
+    .floating-fab .close-icon {
+      display: none;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .floating-fab.active .open-icon {
+      display: none;
+    }
+
+    .floating-fab.active .close-icon {
+      display: block;
+    }
+
+    .fab-pulse-ring {
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 87, 34, 0.7);
+      animation: pulseRing 2.4s infinite;
+      pointer-events: none;
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.9); opacity: 0.9; }
+      70% { transform: scale(1.4); opacity: 0; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+
+    .fab-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #10b981;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #090b0e;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Floating Chat Container Modal */
+    .chatbot-container {
+      position: fixed;
+      bottom: 100px;
+      right: 24px;
+      width: 410px;
+      max-width: calc(100vw - 32px);
+      height: 600px;
+      max-height: calc(100vh - 124px);
+      background: rgba(18, 22, 31, 0.96);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 87, 34, 0.25);
+      border-radius: 24px;
+      box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1001;
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: chatPopup 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .chatbot-container.expanded {
+      width: 560px;
+      height: 720px;
+      max-height: calc(100vh - 110px);
+    }
+
+    @keyframes chatPopup {
+      from { opacity: 0; transform: translateY(18px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .chat-header {
+      background: #171b26;
+      border-bottom: 1px solid var(--card-border);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-header-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chat-avatar {
+      font-size: 24px;
+      background: rgba(255, 87, 34, 0.15);
+      border: 1px solid rgba(255, 87, 34, 0.3);
+      border-radius: 12px;
+      padding: 6px 8px;
+    }
+
+    .chat-header-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ai-pill {
+      font-size: 10px;
+      font-weight: 800;
+      background: rgba(255, 87, 34, 0.2);
+      color: var(--primary);
+      padding: 2px 6px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 87, 34, 0.3);
+    }
+
+    .chat-header-sub {
+      font-size: 11px;
+      color: #10b981;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 2px;
+    }
+
+    .online-indicator {
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .chat-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chat-tool-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .chat-tool-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chat-bubble {
+      max-width: 86%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+
+    .chat-bubble.bot {
+      align-self: flex-start;
+      background: #1b212f;
+      border: 1px solid var(--card-border);
+      color: #f1f5f9;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    }
+
+    .chat-bubble.bot strong {
+      color: #ff8a65;
+    }
+
+    .chat-bubble.bot ul {
+      margin: 6px 0 6px 16px;
+    }
+
+    .chat-bubble.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #ff5722, #e64a19);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 6px 16px -2px rgba(255, 87, 34, 0.45);
+    }
+
+    .chat-typing {
+      align-self: flex-start;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: #1b212f;
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+    }
+
+    .chat-typing-dots {
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .chat-typing-dots span {
+      width: 5px;
+      height: 5px;
+      background: #ff5722;
+      border-radius: 50%;
+      animation: blink 1.2s infinite ease-in-out both;
+    }
+
+    .chat-typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .chat-typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes blink {
+      0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    .chat-suggestions {
+      padding: 10px 14px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      scrollbar-width: none;
+    }
+
+    .chat-suggestions::-webkit-scrollbar {
+      display: none;
+    }
+
+    .suggestion-chip {
+      background: #161c28;
+      border: 1px solid var(--card-border);
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 16px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .suggestion-chip:hover {
+      background: rgba(255, 87, 34, 0.15);
+      border-color: var(--primary);
+      color: #ff8a65;
+      transform: translateY(-1px);
+    }
+
+    .chat-input-bar {
+      padding: 14px;
+      background: #151924;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: #0b0d13;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 11px 16px;
+      color: #fff;
+      font-size: 13.5px;
+      outline: none;
+      margin-bottom: 0;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(255, 87, 34, 0.25);
+    }
+
+    .chat-send-btn {
+      background: linear-gradient(135deg, var(--primary), #e64a19);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 0 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(255, 87, 34, 0.4);
+    }
+
+    .chat-send-btn:hover {
+      background: linear-gradient(135deg, var(--primary-hover), #d84315);
+      transform: translateY(-1px);
+    }
+
+    .chat-send-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ========================================================
+       WORKOUT & TRAINING HUB STYLES (BUTTONS & MODALS)
+       ======================================================== */
+    .workout-buttons-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 680px) {
+      .workout-buttons-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .workout-hub-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .workout-hub-btn.primary {
+      background: linear-gradient(135deg, rgba(255, 87, 34, 0.22), rgba(230, 74, 25, 0.08));
+      border-color: rgba(255, 87, 34, 0.45);
+      box-shadow: 0 4px 16px -2px rgba(255, 87, 34, 0.25);
+    }
+
+    .workout-hub-btn.primary:hover {
+      background: linear-gradient(135deg, rgba(255, 87, 34, 0.35), rgba(230, 74, 25, 0.18));
+      border-color: #ff5722;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 87, 34, 0.4);
+    }
+
+    .workout-hub-btn.secondary {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(14, 165, 233, 0.06));
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 4px 16px -2px rgba(56, 189, 248, 0.2);
+    }
+
+    .workout-hub-btn.secondary:hover {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.32), rgba(14, 165, 233, 0.16));
+      border-color: #38bdf8;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(56, 189, 248, 0.35);
+    }
+
+    .workout-btn-icon {
+      font-size: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+    }
+
+    .workout-btn-text {
+      flex: 1;
+    }
+
+    .workout-btn-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .split-badge-pill {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.25);
+      color: #7dd3fc;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .workout-btn-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      line-height: 1.3;
+    }
+
+    /* Today's Workout Card */
+    .today-workout-card {
+      background: #0d0f14;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .today-workout-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+
+    .today-tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 0.5px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .today-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      margin: 0;
+    }
+
+    .quick-log-btn {
+      background: rgba(255, 87, 34, 0.15);
+      border: 1px solid rgba(255, 87, 34, 0.4);
+      color: #ff8a65;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .quick-log-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .today-exercises-preview {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 12.5px;
+      color: #94a3b8;
+    }
+
+    /* Beginner Banner */
+    .beginner-banner {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(99, 102, 241, 0.05));
+      border: 1px dashed rgba(56, 189, 248, 0.35);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .beginner-banner:hover {
+      border-color: #38bdf8;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(99, 102, 241, 0.1));
+      transform: translateY(-1px);
+    }
+
+    /* Recent Activity */
+    .recent-workouts-section {
+      background: #0d0f14;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .recent-workouts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .recent-workout-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #151924;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 10px 12px;
+      border-radius: 10px;
+      transition: border-color 0.2s;
+    }
+
+    .recent-workout-item:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    /* ========================================================
+       MODAL STYLES (LOG WORKOUT & WORKOUT SPLITS)
+       ======================================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(5, 7, 12, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 16px;
+      animation: modalFadeIn 0.2s ease-out;
+    }
+
+    .modal-dialog {
+      background: #151924;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-dialog.large {
+      max-width: 860px;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes modalSlideUp {
+      from { transform: translateY(20px) scale(0.97); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .modal-header {
+      padding: 18px 24px 14px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background: #151924;
+      z-index: 10;
+    }
+
+    .modal-close-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      transform: rotate(90deg);
+    }
+
+    .modal-body {
+      padding: 22px 24px;
+      overflow-y: auto;
+    }
+
+    .modal-cancel-btn {
+      background: #232a3b;
+      border: 1px solid var(--card-border);
+      color: #94a3b8;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex: 1;
+    }
+
+    .modal-cancel-btn:hover {
+      color: #fff;
+      background: #2d3748;
+    }
+
+    /* Splits Guide Styles */
+    .splits-guide-hero {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(99, 102, 241, 0.08));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    .guide-hero-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .guide-hero-text strong {
+      color: #38bdf8;
+      font-size: 13.5px;
+    }
+
+    .splits-tab-nav {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--card-border);
+      scrollbar-width: none;
+    }
+
+    .splits-tab-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .split-tab-btn {
+      background: #1c2230;
+      border: 1px solid var(--card-border);
+      color: #94a3b8;
+      padding: 9px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .split-tab-btn:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .split-tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), #e64a19);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 14px rgba(255, 87, 34, 0.35);
+    }
+
+    .split-tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .split-tab-content.active {
+      display: flex;
+    }
+
+    .split-overview-card {
+      background: #0d0f14;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .split-overview-badge {
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(255, 87, 34, 0.15);
+      color: #ff8a65;
+      font-weight: 700;
+    }
+
+    .split-day-card {
+      background: #0f121a;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      transition: all 0.2s;
+    }
+
+    .split-day-card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .split-day-card.rest-day {
+      background: rgba(16, 185, 129, 0.04);
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+
+    .split-day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .split-day-title {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .split-day-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+    }
+
+    .split-day-badge.rest {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+
+    .split-ex-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .split-ex-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+      padding: 7px 12px;
+      background: #161b26;
+      border-radius: 8px;
+    }
+
+    .split-ex-name {
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+
+    .split-ex-sets {
+      font-size: 11.5px;
+      color: #ff8a65;
+      font-weight: 700;
+    }
+
+    .log-this-day-btn {
+      background: #1f2737;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #fff;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .log-this-day-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 87, 34, 0.35);
+    }
   </style>
 </head>
 <body>
@@ -317,8 +1276,10 @@
       🏋️‍♂️ Fitness<span>Arena</span>
     </a>
     <div class="nav-user">
-      <span id="userNameText" style="font-weight: 600; font-size: 14px;">Athlete</span>
-      <a href="/profile" class="profile-nav-btn">👤 Profile</a>
+      <a href="/profile" class="user-name-btn" title="Click to view & edit your profile">
+        <span>👤</span>
+        <span id="userNameText">Athlete</span>
+      </a>
     </div>
   </nav>
 
@@ -406,40 +1367,650 @@
         </div>
       </div>
 
-      <!-- Workout Logger -->
+      <!-- Workout & Training Hub Panel -->
       <div class="panel">
-        <h2>🏋️ Log Workout (+50 XP & Streak)</h2>
-        <form id="workoutLogForm" onsubmit="submitWorkout(event)">
-          <label style="font-size: 12px; color: var(--text-muted);">Workout Title</label>
-          <input type="text" id="workoutTitle" value="Chest & Triceps Power" required>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+          <h2 style="margin-bottom: 0;">🏋️ Workout & Training</h2>
+          <span style="font-size: 11px; padding: 3px 8px; border-radius: 999px; background: rgba(255, 87, 34, 0.15); color: #ff7043; font-weight: 700;">+50 XP / Session</span>
+        </div>
 
-          <label style="font-size: 12px; color: var(--text-muted);">Select Exercise</label>
+        <!-- The Two Action Buttons: Log Workout & Workout Splits -->
+        <div class="workout-buttons-row">
+          <button type="button" class="workout-hub-btn primary" onclick="openWorkoutLogModal()">
+            <div class="workout-btn-icon">🏋️</div>
+            <div class="workout-btn-text">
+              <div class="workout-btn-title">Log Workout</div>
+              <div class="workout-btn-sub">Track sets, reps & earn +50 XP 🔥</div>
+            </div>
+          </button>
+
+          <button type="button" class="workout-hub-btn secondary" onclick="openWorkoutSplitsModal()">
+            <div class="workout-btn-icon">📋</div>
+            <div class="workout-btn-text">
+              <div class="workout-btn-title">Workout Splits <span class="split-badge-pill">Guide</span></div>
+              <div class="workout-btn-sub">PPL, Bro Split & 7-Day Plans ⭐</div>
+            </div>
+          </button>
+        </div>
+
+        <!-- Today's Suggested Workout Card -->
+        <div class="today-workout-card" id="todayWorkoutCard">
+          <div class="today-workout-header">
+            <div>
+              <span class="today-tag" id="todayDayTag">Today's Focus</span>
+              <h3 class="today-title" id="todayWorkoutTitle">Loading daily focus...</h3>
+            </div>
+            <button class="quick-log-btn" onclick="quickLogToday()" title="Quick log today's session">
+              ⚡ Quick Log
+            </button>
+          </div>
+          <div class="today-exercises-preview" id="todayExercisesPreview">
+            <span>Loading recommended exercises...</span>
+          </div>
+        </div>
+
+        <!-- Beginner Tip Callout -->
+        <div class="beginner-banner" onclick="openWorkoutSplitsModal()">
+          <div style="font-size: 20px;">🔰</div>
+          <div style="font-size: 12px; line-height: 1.4;">
+            <strong style="color: #38bdf8;">New to the gym?</strong> Don't know what exercises or split to do?
+            <span style="color: #94a3b8; display: block; margin-top: 2px;">
+              Click <strong>Workout Splits</strong> above to explore full-week routines (PPL, Bro Split, Full Body) with exact sets & reps! →
+            </span>
+          </div>
+        </div>
+
+        <!-- Recent Workout Logs History -->
+        <div class="recent-workouts-section">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-size: 13px; font-weight: 700; color: #cbd5e1;">Recent Activity</span>
+            <span id="recentLogCount" style="font-size: 11px; color: var(--text-muted);">0 logged</span>
+          </div>
+          <div id="recentWorkoutsList" class="recent-workouts-list">
+            <div style="font-size: 12px; color: var(--text-muted); text-align: center; padding: 10px;">No workouts logged yet. Hit <strong>Log Workout</strong> above to record your first session!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Floating Widget Launcher -->
+  <div class="floating-widget-wrapper">
+    <!-- Floating Hint Callout Bubble -->
+    <div id="chatbotCallout" class="floating-callout" onclick="toggleChatbot()">
+      <div class="callout-avatar">🤖</div>
+      <div class="callout-text">
+        <strong>Need fitness advice?</strong>
+        <span>Chat with Coach Arena AI</span>
+      </div>
+      <button class="callout-close" onclick="dismissCallout(event)" title="Dismiss">✕</button>
+    </div>
+
+    <!-- Floating Circular Trigger (FAB) -->
+    <button id="chatbotLauncher" class="floating-fab" onclick="toggleChatbot()" title="Open Coach Arena">
+      <span class="open-icon">🤖</span>
+      <span class="close-icon">✕</span>
+      <span class="fab-pulse-ring"></span>
+      <span class="fab-badge" id="fabBadge">1</span>
+    </button>
+  </div>
+
+  <!-- Floating Chatbot Window -->
+  <div id="chatbotContainer" class="chatbot-container">
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <div class="chat-avatar">🤖</div>
+        <div>
+          <div class="chat-header-title">Coach Arena</div>
+          <div class="chat-header-sub"><span class="online-indicator"></span> Online &bull; Personalized to your stats</div>
+        </div>
+      </div>
+      <div class="chat-header-actions">
+        <button class="chat-tool-btn" onclick="clearChatHistory()" title="Reset conversation">🗑️</button>
+        <button class="chat-tool-btn" id="expandChatBtn" onclick="toggleChatExpand()" title="Expand / Minimize">⤢</button>
+        <button class="chat-tool-btn" onclick="toggleChatbot()" title="Close chat">✕</button>
+      </div>
+    </div>
+
+    <!-- Message Stream -->
+    <div id="chatMessages" class="chat-messages">
+      <!-- Default Coach Welcome Message -->
+      <div class="chat-bubble bot">
+        👋 <strong>Welcome, Athlete!</strong> I am <strong>Coach Arena</strong>, your personal AI fitness and nutrition mentor.<br><br>
+        Ask me anything about your <strong>workout routines</strong>, <strong>macro targets</strong>, <strong>exercise form</strong>, or <strong>gym streaks</strong>!
+      </div>
+      <div id="chatTyping" class="chat-typing">
+        <span>Coach Arena is thinking</span>
+        <div class="chat-typing-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Question Suggestions -->
+    <div class="chat-suggestions">
+      <div class="suggestion-chip" onclick="sendSuggestedQuestion(this)">🥩 How to hit my protein today?</div>
+      <div class="suggestion-chip" onclick="sendSuggestedQuestion(this)">💪 Best workout routine for my goal?</div>
+      <div class="suggestion-chip" onclick="sendSuggestedQuestion(this)">🛡️ How do streak freezes work?</div>
+      <div class="suggestion-chip" onclick="sendSuggestedQuestion(this)">⚡ Optimal pre-workout meal?</div>
+    </div>
+
+    <!-- Input Bar -->
+    <form id="chatForm" class="chat-input-bar" onsubmit="handleSendChat(event)">
+      <input type="text" id="chatInput" class="chat-input" placeholder="Ask Coach Arena anything..." autocomplete="off">
+      <button type="submit" id="chatSendBtn" class="chat-send-btn">Send</button>
+    </form>
+  </div>
+
+  <!-- ========================================================
+       MODAL 1: LOG WORKOUT FORM
+       ======================================================== -->
+  <div id="workoutLogModal" class="modal-overlay" onclick="handleModalBackdropClick(event, 'workoutLogModal')">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-size: 18px; font-weight: 800; margin: 0; color: #fff;">🏋️ Log Workout Session</h3>
+          <span style="font-size: 12px; color: var(--text-muted);">Record sets, reps, and weights to bank +50 XP & grow your streak</span>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="closeWorkoutLogModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="workoutLogForm" onsubmit="submitWorkout(event)">
+          <label style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Workout Title / Routine Focus</label>
+          <input type="text" id="workoutTitle" value="Chest & Triceps Power" required placeholder="e.g., Push Day (Chest & Triceps)">
+
+          <label style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Select Exercise</label>
           <select id="exerciseSelect" required>
             <option value="">Loading exercises...</option>
           </select>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 6px;">
             <div>
-              <label style="font-size: 11px; color: var(--text-muted);">Sets</label>
-              <input type="number" id="sets" value="4" min="1" required>
+              <label style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Sets</label>
+              <input type="number" id="sets" value="4" min="1" max="25" required>
             </div>
             <div>
-              <label style="font-size: 11px; color: var(--text-muted);">Reps</label>
-              <input type="number" id="reps" value="10" min="1" required>
+              <label style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Reps</label>
+              <input type="number" id="reps" value="10" min="1" max="100" required>
             </div>
             <div>
-              <label style="font-size: 11px; color: var(--text-muted);">Weight (kg)</label>
-              <input type="number" id="weightKg" value="70" step="0.5" required>
+              <label style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Weight (kg)</label>
+              <input type="number" id="weightKg" value="60" step="0.5" min="0" required>
             </div>
           </div>
 
-          <button type="submit" id="logWorkoutBtn" class="action-btn">
-            Log Workout & Claim +50 XP 🔥
-          </button>
+          <div style="margin-top: 6px;">
+            <label style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Duration (Minutes)</label>
+            <input type="number" id="durationMinutes" value="45" min="5" max="240">
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 18px;">
+            <button type="button" class="modal-cancel-btn" onclick="closeWorkoutLogModal()">Cancel</button>
+            <button type="submit" id="logWorkoutBtn" class="action-btn" style="margin-top: 0; flex: 2;">
+              Log Workout & Claim +50 XP 🔥
+            </button>
+          </div>
         </form>
       </div>
     </div>
-  </main>
+  </div>
+
+  <!-- ========================================================
+       MODAL 2: WORKOUT SPLITS GUIDE (PPL, BRO SPLIT, FULL BODY)
+       ======================================================== -->
+  <div id="workoutSplitsModal" class="modal-overlay" onclick="handleModalBackdropClick(event, 'workoutSplitsModal')">
+    <div class="modal-dialog large">
+      <div class="modal-header">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <h3 style="font-size: 18px; font-weight: 800; margin: 0; color: #fff;">📋 Weekly Workout Splits Guide</h3>
+            <span style="font-size: 10px; font-weight: 800; background: rgba(56, 189, 248, 0.2); color: #38bdf8; padding: 2px 8px; border-radius: 999px;">Whole Week Plans</span>
+          </div>
+          <span style="font-size: 12px; color: var(--text-muted); margin-top: 2px; display: block;">Curated 7-day training routines for beginners and seasoned lifters. Pick one and follow every day!</span>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="closeWorkoutSplitsModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Beginner Advice Hero Banner -->
+        <div class="splits-guide-hero">
+          <div class="guide-hero-icon">💡</div>
+          <div class="guide-hero-text">
+            <strong>Not sure which workout split to choose?</strong>
+            <p style="margin: 4px 0 0 0; font-size: 12px; line-height: 1.45; color: #94a3b8;">
+              • <strong>Complete Beginners (3 days/week):</strong> Start with <strong>Full Body</strong> — trains all muscle groups with maximum rest days.<br>
+              • <strong>Bodybuilding Classic (5 days/week):</strong> Choose <strong>Bro Split</strong> — target one muscle group per day to absolute exhaustion.<br>
+              • <strong>Gold Standard Hypertrophy (3 to 6 days/week):</strong> Choose <strong>Push-Pull-Legs (PPL)</strong> — science-backed split hitting muscles twice weekly.
+            </p>
+          </div>
+        </div>
+
+        <!-- Split Navigation Tabs -->
+        <div class="splits-tab-nav">
+          <button type="button" class="split-tab-btn active" id="tabBtn_ppl" onclick="switchSplitTab('ppl')">🔥 Push Pull Legs (6 Days)</button>
+          <button type="button" class="split-tab-btn" id="tabBtn_bro" onclick="switchSplitTab('bro')">💪 Classic Bro Split (5 Days)</button>
+          <button type="button" class="split-tab-btn" id="tabBtn_upperlower" onclick="switchSplitTab('upperlower')">⚡ Upper / Lower (4 Days)</button>
+          <button type="button" class="split-tab-btn" id="tabBtn_fullbody" onclick="switchSplitTab('fullbody')">🔰 Full Body (3 Days - Best for Beginners)</button>
+        </div>
+
+        <!-- ==================== TAB 1: PUSH PULL LEGS (PPL) ==================== -->
+        <div id="splitTab_ppl" class="split-tab-content active">
+          <div class="split-overview-card">
+            <div>
+              <strong style="color: #ff8a65; font-size: 14px;">🔥 Push Pull Legs (PPL Split)</strong>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Frequency: 6 Training Days • 1 Rest Day | Ideal for Muscle Growth & Hypertrophy</div>
+            </div>
+            <span class="split-overview-badge">Most Popular</span>
+          </div>
+
+          <!-- Monday: Push A -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Monday</span> • Push A (Chest, Shoulders, Triceps)</h4>
+              <span class="split-day-badge">Chest & Push Focus</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bench Press</span><span class="split-ex-sets">4 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Incline Dumbbell Press</span><span class="split-ex-sets">3 sets × 10–12 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Overhead Barbell Press (OHP)</span><span class="split-ex-sets">3 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Dumbbell Lateral Raise</span><span class="split-ex-sets">4 sets × 12–15 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Tricep Rope Pushdown</span><span class="split-ex-sets">3 sets × 12–15 reps</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Push Day A (Chest, Shoulders, Triceps)', 'Barbell Bench Press')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Tuesday: Pull A -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Tuesday</span> • Pull A (Back & Biceps)</h4>
+              <span class="split-day-badge">Back & Pull Focus</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Deadlift</span><span class="split-ex-sets">3 sets × 5 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Pull-ups</span><span class="split-ex-sets">3 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bent-Over Row</span><span class="split-ex-sets">4 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bicep Curl</span><span class="split-ex-sets">3 sets × 10–12 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Hanging Leg Raise</span><span class="split-ex-sets">3 sets × 12–15 reps</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Pull Day A (Back & Biceps)', 'Barbell Deadlift')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Wednesday: Legs A -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Wednesday</span> • Legs A (Quads & Calves)</h4>
+              <span class="split-day-badge">Quad Dominant</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Back Squat</span><span class="split-ex-sets">4 sets × 6–8 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Romanian Deadlift (RDL)</span><span class="split-ex-sets">3 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Bulgarian Split Squat</span><span class="split-ex-sets">3 sets × 10 reps/leg</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Plank</span><span class="split-ex-sets">3 sets × 60 secs</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Legs Day A (Quads & Core)', 'Barbell Back Squat')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Thursday: Push B -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Thursday</span> • Push B (Shoulders & Incline Focus)</h4>
+              <span class="split-day-badge">Hypertrophy Push</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Incline Dumbbell Press</span><span class="split-ex-sets">4 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Overhead Barbell Press (OHP)</span><span class="split-ex-sets">3 sets × 10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Push-ups</span><span class="split-ex-sets">3 sets × to failure</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Dumbbell Lateral Raise</span><span class="split-ex-sets">4 sets × 15 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Tricep Rope Pushdown</span><span class="split-ex-sets">4 sets × 12 reps</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Push Day B (Incline & Shoulders)', 'Incline Dumbbell Press')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Friday: Pull B -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Friday</span> • Pull B (Upper Back & Arms)</h4>
+              <span class="split-day-badge">Back Thickness</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bent-Over Row</span><span class="split-ex-sets">4 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Pull-ups</span><span class="split-ex-sets">4 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bicep Curl</span><span class="split-ex-sets">4 sets × 10–12 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Hanging Leg Raise</span><span class="split-ex-sets">3 sets × 15 reps</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Pull Day B (Back Thickness & Biceps)', 'Barbell Bent-Over Row')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Saturday: Legs B -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Saturday</span> • Legs B (Hamstrings & Posterior Chain)</h4>
+              <span class="split-day-badge">Hamstring Focus</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Romanian Deadlift (RDL)</span><span class="split-ex-sets">4 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Back Squat</span><span class="split-ex-sets">3 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Bulgarian Split Squat</span><span class="split-ex-sets">3 sets × 10 reps/leg</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Plank</span><span class="split-ex-sets">3 sets × 60 secs</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Legs Day B (Posterior Chain & Hamstrings)', 'Romanian Deadlift (RDL)')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Sunday: Rest -->
+          <div class="split-day-card rest-day">
+            <div class="split-day-header">
+              <h4 class="split-day-title" style="color: #10b981;"><span>Sunday</span> • Active Recovery & Mobility</h4>
+              <span class="split-day-badge rest">Rest Day</span>
+            </div>
+            <div style="font-size: 12.5px; color: #94a3b8; line-height: 1.4;">
+              🧘 Light 20–30 min outdoor walk, foam rolling, hydration, and meal prep. Scheduled rest days protect muscle growth and do NOT break your gym streak!
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB 2: CLASSIC BRO SPLIT ==================== -->
+        <div id="splitTab_bro" class="split-tab-content">
+          <div class="split-overview-card">
+            <div>
+              <strong style="color: #38bdf8; font-size: 14px;">💪 Classic Bro Split (1 Muscle Group / Day)</strong>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Frequency: 5 Training Days • 2 Rest Days | Maximizes Intensity & Muscle Focus</div>
+            </div>
+            <span class="split-overview-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">Bodybuilding Classic</span>
+          </div>
+
+          <!-- Monday: Chest -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Monday</span> • International Chest Day</h4>
+              <span class="split-day-badge">Chest Focus</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bench Press</span><span class="split-ex-sets">4 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Incline Dumbbell Press</span><span class="split-ex-sets">4 sets × 10–12 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Push-ups</span><span class="split-ex-sets">3 sets × max reps</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Chest Day Blast', 'Barbell Bench Press')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Tuesday: Back -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Tuesday</span> • Back & Lats Annihilation</h4>
+              <span class="split-day-badge">Back Focus</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Deadlift</span><span class="split-ex-sets">3 sets × 5 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Pull-ups</span><span class="split-ex-sets">4 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bent-Over Row</span><span class="split-ex-sets">4 sets × 8–10 reps</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Back & Lats Day', 'Barbell Deadlift')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Wednesday: Shoulders -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Wednesday</span> • Boulder Shoulders</h4>
+              <span class="split-day-badge">Deltoid Focus</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Overhead Barbell Press (OHP)</span><span class="split-ex-sets">4 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Dumbbell Lateral Raise</span><span class="split-ex-sets">5 sets × 12–15 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Push-ups</span><span class="split-ex-sets">3 sets × 15 reps</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Shoulders Day', 'Overhead Barbell Press (OHP)')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Thursday: Legs -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Thursday</span> • Heavy Leg Day</h4>
+              <span class="split-day-badge">Quads & Hamstrings</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Back Squat</span><span class="split-ex-sets">4 sets × 6–8 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Romanian Deadlift (RDL)</span><span class="split-ex-sets">4 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Bulgarian Split Squat</span><span class="split-ex-sets">3 sets × 10 reps/leg</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Heavy Leg Day', 'Barbell Back Squat')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Friday: Arms & Core -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Friday</span> • Arms & Core Gun Show</h4>
+              <span class="split-day-badge">Arms & Abs</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bicep Curl</span><span class="split-ex-sets">4 sets × 10–12 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Tricep Rope Pushdown</span><span class="split-ex-sets">4 sets × 12–15 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Hanging Leg Raise</span><span class="split-ex-sets">3 sets × 15 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Plank</span><span class="split-ex-sets">3 sets × 60 secs</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Arms & Core Day', 'Barbell Bicep Curl')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Weekend Rest -->
+          <div class="split-day-card rest-day">
+            <div class="split-day-header">
+              <h4 class="split-day-title" style="color: #10b981;"><span>Saturday & Sunday</span> • Weekend Growth & Re-fuel</h4>
+              <span class="split-day-badge rest">Rest Days</span>
+            </div>
+            <div style="font-size: 12.5px; color: #94a3b8; line-height: 1.4;">
+              Sleep 8+ hours, hit your daily protein goal, and let the muscle fibers repair. You crushed 5 hard workouts this week!
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB 3: UPPER / LOWER ==================== -->
+        <div id="splitTab_upperlower" class="split-tab-content">
+          <div class="split-overview-card">
+            <div>
+              <strong style="color: #a855f7; font-size: 14px;">⚡ Upper / Lower Split (4 Days)</strong>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Frequency: 4 Training Days • 3 Rest Days | Exceptional Balance & Strength Development</div>
+            </div>
+            <span class="split-overview-badge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">High Efficiency</span>
+          </div>
+
+          <!-- Monday: Upper A -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Monday</span> • Upper Body A (Heavy Strength)</h4>
+              <span class="split-day-badge">Upper Strength</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bench Press</span><span class="split-ex-sets">4 sets × 6–8 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bent-Over Row</span><span class="split-ex-sets">4 sets × 6–8 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Overhead Barbell Press</span><span class="split-ex-sets">3 sets × 8 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bicep Curl</span><span class="split-ex-sets">3 sets × 10 reps</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Upper Body A (Strength)', 'Barbell Bench Press')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Tuesday: Lower A -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Tuesday</span> • Lower Body A (Squat Focus)</h4>
+              <span class="split-day-badge">Lower Strength</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Back Squat</span><span class="split-ex-sets">4 sets × 6–8 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Romanian Deadlift (RDL)</span><span class="split-ex-sets">3 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Bulgarian Split Squat</span><span class="split-ex-sets">3 sets × 10 reps/leg</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Plank</span><span class="split-ex-sets">3 sets × 60 secs</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Lower Body A (Squat & Quads)', 'Barbell Back Squat')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Wednesday: Rest -->
+          <div class="split-day-card rest-day">
+            <div class="split-day-header">
+              <h4 class="split-day-title" style="color: #10b981;"><span>Wednesday</span> • Midweek Active Rest</h4>
+              <span class="split-day-badge rest">Rest Day</span>
+            </div>
+            <div style="font-size: 12.5px; color: #94a3b8;">Light stretching, mobility, and hydrate well.</div>
+          </div>
+
+          <!-- Thursday: Upper B -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Thursday</span> • Upper Body B (Hypertrophy)</h4>
+              <span class="split-day-badge">Upper Hypertrophy</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Incline Dumbbell Press</span><span class="split-ex-sets">4 sets × 10–12 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Pull-ups</span><span class="split-ex-sets">4 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Dumbbell Lateral Raise</span><span class="split-ex-sets">4 sets × 12–15 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Tricep Rope Pushdown</span><span class="split-ex-sets">3 sets × 12–15 reps</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Upper Body B (Hypertrophy)', 'Incline Dumbbell Press')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Friday: Lower B -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Friday</span> • Lower Body B (Deadlift & Posterior)</h4>
+              <span class="split-day-badge">Lower Hypertrophy</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Deadlift</span><span class="split-ex-sets">3 sets × 5 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Romanian Deadlift (RDL)</span><span class="split-ex-sets">3 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Bulgarian Split Squat</span><span class="split-ex-sets">3 sets × 10 reps/leg</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Hanging Leg Raise</span><span class="split-ex-sets">3 sets × 15 reps</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Lower Body B (Deadlift & Hamstrings)', 'Barbell Deadlift')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Weekend Rest -->
+          <div class="split-day-card rest-day">
+            <div class="split-day-header">
+              <h4 class="split-day-title" style="color: #10b981;"><span>Saturday & Sunday</span> • Weekend Recharge</h4>
+              <span class="split-day-badge rest">Rest Days</span>
+            </div>
+            <div style="font-size: 12.5px; color: #94a3b8;">Take 2 days off to let joints and nervous system recover.</div>
+          </div>
+        </div>
+
+        <!-- ==================== TAB 4: FULL BODY (BEGINNERS) ==================== -->
+        <div id="splitTab_fullbody" class="split-tab-content">
+          <div class="split-overview-card">
+            <div>
+              <strong style="color: #10b981; font-size: 14px;">🔰 Full Body Split (3 Days - Best for Beginners)</strong>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Frequency: 3 Training Days • 4 Rest Days | Builds Foundation, Perfect Form & Clean Habit</div>
+            </div>
+            <span class="split-overview-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">Recommended for Beginners</span>
+          </div>
+
+          <!-- Monday: Full Body 1 -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Monday</span> • Full Body Day 1 (Compound Core)</h4>
+              <span class="split-day-badge">Squat & Bench</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Back Squat</span><span class="split-ex-sets">3 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bench Press</span><span class="split-ex-sets">3 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bent-Over Row</span><span class="split-ex-sets">3 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Plank</span><span class="split-ex-sets">3 sets × 45 secs</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Full Body Day 1 (Foundation)', 'Barbell Back Squat')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Tuesday: Rest -->
+          <div class="split-day-card rest-day">
+            <div class="split-day-header">
+              <h4 class="split-day-title" style="color: #10b981;"><span>Tuesday</span> • Rest Day</h4>
+              <span class="split-day-badge rest">Rest & Walk</span>
+            </div>
+            <div style="font-size: 12.5px; color: #94a3b8;">Take an easy walk, hydrate, and stretch.</div>
+          </div>
+
+          <!-- Wednesday: Full Body 2 -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Wednesday</span> • Full Body Day 2 (Posterior & Press)</h4>
+              <span class="split-day-badge">Deadlift & Overhead</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Deadlift</span><span class="split-ex-sets">3 sets × 5 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Overhead Barbell Press (OHP)</span><span class="split-ex-sets">3 sets × 8–10 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Pull-ups</span><span class="split-ex-sets">3 sets × 6–8 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Barbell Bicep Curl</span><span class="split-ex-sets">3 sets × 10–12 reps</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Full Body Day 2 (Strength & Delts)', 'Barbell Deadlift')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Thursday: Rest -->
+          <div class="split-day-card rest-day">
+            <div class="split-day-header">
+              <h4 class="split-day-title" style="color: #10b981;"><span>Thursday</span> • Rest Day</h4>
+              <span class="split-day-badge rest">Rest & Recovery</span>
+            </div>
+            <div style="font-size: 12.5px; color: #94a3b8;">Rest and fuel your muscles.</div>
+          </div>
+
+          <!-- Friday: Full Body 3 -->
+          <div class="split-day-card">
+            <div class="split-day-header">
+              <h4 class="split-day-title"><span>Friday</span> • Full Body Day 3 (Hypertrophy & Arms)</h4>
+              <span class="split-day-badge">Incline & Single-Leg</span>
+            </div>
+            <div class="split-ex-list">
+              <div class="split-ex-item"><span class="split-ex-name">Incline Dumbbell Press</span><span class="split-ex-sets">3 sets × 10–12 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Bulgarian Split Squat</span><span class="split-ex-sets">3 sets × 8 reps/leg</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Tricep Rope Pushdown</span><span class="split-ex-sets">3 sets × 12 reps</span></div>
+              <div class="split-ex-item"><span class="split-ex-name">Hanging Leg Raise</span><span class="split-ex-sets">3 sets × 12 reps</span></div>
+            </div>
+            <button type="button" class="log-this-day-btn" onclick="selectDayForWorkout('Full Body Day 3 (Incline & Single Leg)', 'Incline Dumbbell Press')">
+              ⚡ Log This Workout (+50 XP)
+            </button>
+          </div>
+
+          <!-- Weekend Rest -->
+          <div class="split-day-card rest-day">
+            <div class="split-day-header">
+              <h4 class="split-day-title" style="color: #10b981;"><span>Saturday & Sunday</span> • Weekend Rest</h4>
+              <span class="split-day-badge rest">Rest Days</span>
+            </div>
+            <div style="font-size: 12.5px; color: #94a3b8;">Enjoy your weekend! 3 total body sessions completed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     const token = localStorage.getItem('fitness_token');
@@ -456,6 +2027,11 @@
         if (!userRes.ok) throw new Error('Unauthorized');
         const userData = await userRes.json();
         const user = userData.data;
+
+        if (!user.profile) {
+          window.location.href = '/onboarding';
+          return;
+        }
 
         document.getElementById('userNameText').innerText = user.name;
         document.getElementById('streakDays').innerText = user.streak?.currentStreak || 0;
@@ -605,7 +2181,9 @@
         alert(`🎉 Workout Logged!\n🔥 Gym Streak: ${data.data.streak.currentStreak} Days\n⭐ XP Earned: +${data.data.gamification.xpAwardedThisSession} XP!\n🏆 Rank: ${data.data.gamification.badge}`);
         btn.disabled = false;
         btn.innerText = 'Log Workout & Claim +50 XP 🔥';
+        closeWorkoutLogModal();
         fetchDashboardData();
+        fetchRecentWorkouts();
       } catch (err) {
         alert(err.message);
         btn.disabled = false;
@@ -618,7 +2196,400 @@
       window.location.href = '/login';
     }
 
+    /* ========================================================
+       WORKOUT HUB MODALS & SPLITS HANDLERS
+       ======================================================== */
+    function openWorkoutLogModal(title = '', exerciseNameOrId = '') {
+      if (title) {
+        document.getElementById('workoutTitle').value = title;
+      }
+      if (exerciseNameOrId) {
+        const select = document.getElementById('exerciseSelect');
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].text.toLowerCase().includes(exerciseNameOrId.toLowerCase()) || select.options[i].value === exerciseNameOrId) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
+      document.getElementById('workoutLogModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWorkoutLogModal() {
+      document.getElementById('workoutLogModal').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    function openWorkoutSplitsModal() {
+      document.getElementById('workoutSplitsModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWorkoutSplitsModal() {
+      document.getElementById('workoutSplitsModal').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    function handleModalBackdropClick(e, modalId) {
+      if (e.target.id === modalId) {
+        if (modalId === 'workoutLogModal') closeWorkoutLogModal();
+        if (modalId === 'workoutSplitsModal') closeWorkoutSplitsModal();
+      }
+    }
+
+    function switchSplitTab(tabKey) {
+      const tabs = ['ppl', 'bro', 'upperlower', 'fullbody'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tabBtn_${t}`);
+        const content = document.getElementById(`splitTab_${t}`);
+        if (btn) btn.classList.remove('active');
+        if (content) content.classList.remove('active');
+      });
+      const activeBtn = document.getElementById(`tabBtn_${tabKey}`);
+      const activeContent = document.getElementById(`splitTab_${tabKey}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+    }
+
+    function selectDayForWorkout(title, primaryExercise) {
+      closeWorkoutSplitsModal();
+      openWorkoutLogModal(title, primaryExercise);
+    }
+
+    function updateTodayWorkoutCard() {
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const today = days[new Date().getDay()];
+      const dayTag = document.getElementById('todayDayTag');
+      if (dayTag) dayTag.innerText = `Today's Focus • ${today}`;
+
+      const schedule = {
+        Monday: {
+          title: 'Push Day A (Chest, Shoulders, Triceps)',
+          primary: 'Barbell Bench Press',
+          exercises: [
+            '• Barbell Bench Press (4 sets × 8–10 reps)',
+            '• Incline Dumbbell Press (3 sets × 10–12 reps)',
+            '• Dumbbell Lateral Raise (4 sets × 12–15 reps)',
+            '• Tricep Rope Pushdown (3 sets × 12–15 reps)'
+          ]
+        },
+        Tuesday: {
+          title: 'Pull Day A (Back & Biceps)',
+          primary: 'Barbell Deadlift',
+          exercises: [
+            '• Barbell Deadlift (3 sets × 5 reps)',
+            '• Pull-ups (3 sets × 8–10 reps)',
+            '• Barbell Bent-Over Row (4 sets × 8–10 reps)',
+            '• Barbell Bicep Curl (3 sets × 10–12 reps)'
+          ]
+        },
+        Wednesday: {
+          title: 'Legs Day A (Quads & Core)',
+          primary: 'Barbell Back Squat',
+          exercises: [
+            '• Barbell Back Squat (4 sets × 6–8 reps)',
+            '• Romanian Deadlift (RDL) (3 sets × 8–10 reps)',
+            '• Bulgarian Split Squat (3 sets × 10 reps/leg)',
+            '• Plank (3 sets × 60 secs)'
+          ]
+        },
+        Thursday: {
+          title: 'Push Day B (Incline & Shoulders)',
+          primary: 'Incline Dumbbell Press',
+          exercises: [
+            '• Incline Dumbbell Press (4 sets × 8–10 reps)',
+            '• Overhead Barbell Press (3 sets × 10 reps)',
+            '• Dumbbell Lateral Raise (4 sets × 15 reps)',
+            '• Tricep Rope Pushdown (4 sets × 12 reps)'
+          ]
+        },
+        Friday: {
+          title: 'Pull Day B (Back Thickness & Biceps)',
+          primary: 'Barbell Bent-Over Row',
+          exercises: [
+            '• Barbell Bent-Over Row (4 sets × 8–10 reps)',
+            '• Pull-ups (4 sets × 8–10 reps)',
+            '• Barbell Bicep Curl (4 sets × 10–12 reps)',
+            '• Hanging Leg Raise (3 sets × 15 reps)'
+          ]
+        },
+        Saturday: {
+          title: 'Legs Day B (Posterior Chain & Core)',
+          primary: 'Romanian Deadlift (RDL)',
+          exercises: [
+            '• Romanian Deadlift (RDL) (4 sets × 8–10 reps)',
+            '• Barbell Back Squat (3 sets × 8–10 reps)',
+            '• Bulgarian Split Squat (3 sets × 10 reps/leg)',
+            '• Plank (3 sets × 60 secs)'
+          ]
+        },
+        Sunday: {
+          title: 'Active Recovery & Mobility',
+          primary: 'Plank',
+          exercises: [
+            '• 20–30 min outdoor walk or light cardio',
+            '• Full body foam rolling & dynamic stretching',
+            '• Hydrate 3L+ and prep weekly high-protein meals'
+          ]
+        }
+      };
+
+      const plan = schedule[today] || schedule.Monday;
+      const titleElem = document.getElementById('todayWorkoutTitle');
+      const prevElem = document.getElementById('todayExercisesPreview');
+      if (titleElem) titleElem.innerText = plan.title;
+      if (prevElem) prevElem.innerHTML = plan.exercises.map(e => `<span>${e}</span>`).join('');
+      window._currentTodayPlan = plan;
+    }
+
+    function quickLogToday() {
+      if (window._currentTodayPlan) {
+        openWorkoutLogModal(window._currentTodayPlan.title, window._currentTodayPlan.primary);
+      } else {
+        openWorkoutLogModal('Daily Training Session');
+      }
+    }
+
+    async function fetchRecentWorkouts() {
+      try {
+        const res = await fetch('/api/workouts/history', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          const countElem = document.getElementById('recentLogCount');
+          if (countElem) countElem.innerText = `${data.data.length} total`;
+          const html = data.data.slice(0, 4).map(w => {
+            const d = new Date(w.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+            const firstEx = w.exercises?.[0];
+            const exName = firstEx?.exercise?.name || 'Strength Exercise';
+            const sets = firstEx?.setsCompleted || 3;
+            const reps = firstEx?.repsCompleted || 10;
+            const weight = firstEx?.weightUsedKg ? ` • ${firstEx.weightUsedKg}kg` : '';
+            return `
+              <div class="recent-workout-item">
+                <div>
+                  <div style="font-weight: 700; color: #fff; font-size: 13px;">${w.title}</div>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+                    ${exName} (${sets} sets × ${reps} reps${weight})
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <span style="font-size: 11px; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.15); padding: 2px 6px; border-radius: 6px;">+50 XP</span>
+                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">${d}</div>
+                </div>
+              </div>
+            `;
+          }).join('');
+          const listElem = document.getElementById('recentWorkoutsList');
+          if (listElem) listElem.innerHTML = html;
+        }
+      } catch (err) {
+        console.warn('Could not load recent workouts:', err);
+      }
+    }
+
+    // AI Coach Chatbot State & Handlers with Isolated Database Storage
+    let chatOpen = false;
+    let isExpanded = false;
+
+    async function initChatHistory() {
+      try {
+        const res = await fetch('/api/chat/history', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          const messagesDiv = document.getElementById('chatMessages');
+          const typingIndicator = document.getElementById('chatTyping');
+          for (const msg of data.data) {
+            const bubble = document.createElement('div');
+            bubble.className = msg.role === 'user' ? 'chat-bubble user' : 'chat-bubble bot';
+            if (msg.role === 'user') {
+              bubble.innerText = msg.text;
+            } else {
+              bubble.innerHTML = formatBotMessage(msg.text);
+            }
+            messagesDiv.insertBefore(bubble, typingIndicator);
+          }
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+      } catch (e) {
+        console.error('Could not load chat history from database:', e);
+      }
+    }
+
+    function toggleChatbot() {
+      chatOpen = !chatOpen;
+      const container = document.getElementById('chatbotContainer');
+      const launcher = document.getElementById('chatbotLauncher');
+      const badge = document.getElementById('fabBadge');
+      const callout = document.getElementById('chatbotCallout');
+
+      if (chatOpen) {
+        container.style.display = 'flex';
+        launcher.classList.add('active');
+        if (badge) badge.style.display = 'none';
+        if (callout) callout.style.display = 'none';
+        document.getElementById('chatInput').focus();
+        const messagesDiv = document.getElementById('chatMessages');
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      } else {
+        container.style.display = 'none';
+        launcher.classList.remove('active');
+      }
+    }
+
+    function dismissCallout(e) {
+      if (e) e.stopPropagation();
+      const callout = document.getElementById('chatbotCallout');
+      if (callout) callout.style.display = 'none';
+    }
+
+    function toggleChatExpand() {
+      const container = document.getElementById('chatbotContainer');
+      const btn = document.getElementById('expandChatBtn');
+      isExpanded = !isExpanded;
+      if (isExpanded) {
+        container.classList.add('expanded');
+        btn.innerText = '⤡';
+        btn.title = 'Minimize Window';
+      } else {
+        container.classList.remove('expanded');
+        btn.innerText = '⤢';
+        btn.title = 'Expand Window';
+      }
+    }
+
+    async function clearChatHistory() {
+      try {
+        await fetch('/api/chat/history', {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+      } catch (e) {
+        console.error('Failed to clear database chat history:', e);
+      }
+      const messagesDiv = document.getElementById('chatMessages');
+      messagesDiv.innerHTML = `
+        <div class="chat-bubble bot">
+          👋 <strong>Welcome back!</strong> Conversation reset. I am <strong>Coach Arena</strong>, your personal AI fitness and nutrition mentor.<br><br>
+          What would you like to discuss next? Your <strong>routine</strong>, <strong>macros</strong>, or <strong>gym streak</strong>?
+        </div>
+        <div id="chatTyping" class="chat-typing">
+          <span>Coach Arena is thinking</span>
+          <div class="chat-typing-dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      `;
+    }
+
+    function sendSuggestedQuestion(chip) {
+      const text = chip.innerText.replace(/^[^\w]+/, '').trim();
+      document.getElementById('chatInput').value = text;
+      handleSendChat(new Event('submit'));
+    }
+
+    function formatBotMessage(text) {
+      if (!text) return '';
+      let html = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      // Headings
+      html = html.replace(/^### (.*$)/gm, '<div style="font-weight: 700; color: #ff7043; margin-top: 8px; margin-bottom: 3px; font-size: 13.5px;">$1</div>');
+      html = html.replace(/^## (.*$)/gm, '<div style="font-weight: 700; color: #ff5722; margin-top: 10px; margin-bottom: 4px; font-size: 14px;">$1</div>');
+      html = html.replace(/^# (.*$)/gm, '<div style="font-weight: 800; color: #ff5722; margin-top: 10px; margin-bottom: 4px; font-size: 15px;">$1</div>');
+
+      // Horizontal dividers
+      html = html.replace(/^\s*[\*\-_]{3,}\s*$/gm, '<hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 8px 0;">');
+
+      // Bold **text**
+      html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      // Italic *text*
+      html = html.replace(/(?<!\*)\*(?!\*)(.*?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
+
+      // Bullet points
+      html = html.replace(/^\s*[\-\*•]\s+(.*)$/gm, '<div style="display: flex; gap: 6px; margin: 3px 0 3px 4px;"><span style="color: #ff5722;">•</span><span>$1</span></div>');
+
+      // Line breaks
+      html = html.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+      return html;
+    }
+
+    async function handleSendChat(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const sendBtn = document.getElementById('chatSendBtn');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      input.disabled = true;
+      sendBtn.disabled = true;
+
+      const messagesDiv = document.getElementById('chatMessages');
+      const typingIndicator = document.getElementById('chatTyping');
+
+      // Append user bubble
+      const userBubble = document.createElement('div');
+      userBubble.className = 'chat-bubble user';
+      userBubble.innerText = text;
+      messagesDiv.insertBefore(userBubble, typingIndicator);
+
+      typingIndicator.style.display = 'inline-flex';
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            message: text
+          })
+        });
+
+        const data = await res.json();
+        typingIndicator.style.display = 'none';
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Coach is currently unavailable.');
+        }
+
+        const reply = data.data.reply;
+
+        // Append bot bubble
+        const botBubble = document.createElement('div');
+        botBubble.className = 'chat-bubble bot';
+        botBubble.innerHTML = formatBotMessage(reply);
+        messagesDiv.insertBefore(botBubble, typingIndicator);
+
+      } catch (err) {
+        typingIndicator.style.display = 'none';
+        const errBubble = document.createElement('div');
+        errBubble.className = 'chat-bubble bot';
+        errBubble.innerHTML = `⚠️ <em>${err.message}</em>`;
+        messagesDiv.insertBefore(errBubble, typingIndicator);
+      } finally {
+        input.disabled = false;
+        sendBtn.disabled = false;
+        input.focus();
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+    }
+
     fetchDashboardData();
+    updateTodayWorkoutCard();
+    fetchRecentWorkouts();
+    initChatHistory();
   </script>
 </body>
 </html>

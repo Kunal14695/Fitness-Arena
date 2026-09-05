@@ -215,49 +215,63 @@ Return your response strictly in the following JSON format:
 }
 `;
 
-  try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          responseMimeType: 'application/json',
-          temperature: 0.7,
-        },
-      }),
-    });
+  const models = [
+    'gemini-flash-lite-latest',
+    'gemini-3.5-flash-lite',
+    'gemini-3.5-flash',
+    'gemini-flash-latest',
+    'gemini-2.5-flash',
+  ];
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Gemini API Error:', response.status, errorText);
-      return null;
+  for (const model of models) {
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(8000),
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            responseMimeType: 'application/json',
+            temperature: 0.7,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.warn(`Gemini Nutrition API Error [${model}]:`, response.status, errorText.slice(0, 150));
+        continue; // Try next model
+      }
+
+      const data = (await response.json()) as any;
+      const jsonText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!jsonText) {
+        console.warn(`Gemini [${model}] returned empty parts, trying next model...`);
+        continue;
+      }
+
+      const parsed = JSON.parse(jsonText);
+      const plan: GeneratedDailyPlan = {
+        breakfast: { ...parsed.breakfast, category: 'BREAKFAST' },
+        lunch: { ...parsed.lunch, category: 'LUNCH' },
+        preWorkout: { ...parsed.preWorkout, category: 'PRE_WORKOUT' },
+        postWorkout: { ...parsed.postWorkout, category: 'POST_WORKOUT' },
+        dinner: { ...parsed.dinner, category: 'DINNER' },
+        snack: { ...parsed.snack, category: 'SNACK' },
+        isAiGenerated: true,
+      };
+
+      // Cache result
+      planCache.set(cacheKey, { plan, timestamp: Date.now() });
+      return plan;
+    } catch (err) {
+      console.warn(`Error generating meal plan via Gemini [${model}]:`, (err as Error).message);
+      continue;
     }
-
-    const data = (await response.json()) as any;
-    const jsonText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!jsonText) {
-      console.error('Gemini returned empty parts');
-      return null;
-    }
-
-    const parsed = JSON.parse(jsonText);
-    const plan: GeneratedDailyPlan = {
-      breakfast: { ...parsed.breakfast, category: 'BREAKFAST' },
-      lunch: { ...parsed.lunch, category: 'LUNCH' },
-      preWorkout: { ...parsed.preWorkout, category: 'PRE_WORKOUT' },
-      postWorkout: { ...parsed.postWorkout, category: 'POST_WORKOUT' },
-      dinner: { ...parsed.dinner, category: 'DINNER' },
-      snack: { ...parsed.snack, category: 'SNACK' },
-      isAiGenerated: true,
-    };
-
-    // Cache result
-    planCache.set(cacheKey, { plan, timestamp: Date.now() });
-    return plan;
-  } catch (err) {
-    console.error('Error generating meal plan via Gemini:', err);
-    return null;
   }
+
+  console.error('All Gemini models exhausted for nutrition plan generation.');
+  return null;
 }

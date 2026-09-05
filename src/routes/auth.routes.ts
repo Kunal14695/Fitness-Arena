@@ -12,7 +12,7 @@ const router = Router();
 const registerSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
-  name: z.string().min(2, 'Name must be at least 2 characters'),
+  name: z.string().min(2, 'Name must be at least 2 characters').optional(),
 });
 
 const loginSchema = z.object({
@@ -36,12 +36,13 @@ router.post('/register', validateBody(registerSchema), async (req, res, next): P
 
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
+    const displayName = (name && name.trim().length >= 2) ? name.trim() : email.split('@')[0];
 
     const user = await prisma.user.create({
       data: {
         email,
         passwordHash,
-        name,
+        name: displayName,
         streak: {
           create: {
             currentStreak: 0,

@@ -13,10 +13,13 @@ import workoutRoutes from './routes/workout.routes.js';
 import streakRoutes from './routes/streak.routes.js';
 import nutritionRoutes from './routes/nutrition.routes.js';
 import rankRoutes from './routes/rank.routes.js';
+import chatRoutes from './routes/chat.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const publicDir = path.join(__dirname, '..', 'public');
+const publicDir = process.env.VERCEL
+  ? path.join(process.cwd(), 'public')
+  : path.join(__dirname, '..', 'public');
 
 const app: Express = express();
 
@@ -69,6 +72,10 @@ app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(publicDir, 'dashboard.html'));
 });
 
+app.get('/onboarding', (req, res) => {
+  res.sendFile(path.join(publicDir, 'onboarding.html'));
+});
+
 app.get('/profile', (req, res) => {
   res.sendFile(path.join(publicDir, 'profile.html'));
 });
@@ -85,6 +92,7 @@ app.use('/api/workouts', workoutRoutes);
 app.use('/api/streak', streakRoutes);
 app.use('/api/nutrition', nutritionRoutes);
 app.use('/api/rank', rankRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Error Handling Middleware
 app.use(errorHandler);

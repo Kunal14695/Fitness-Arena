@@ -36,12 +36,12 @@
       align-items: center;
       justify-content: center;
       padding: 24px 16px;
-      background-image: radial-gradient(circle at top, rgba(255, 87, 34, 0.08) 0%, transparent 70%);
+      background-image: radial-gradient(circle at top, rgba(255, 87, 34, 0.1) 0%, transparent 70%);
     }
 
     .container {
       width: 100%;
-      max-width: 520px;
+      max-width: 440px;
     }
 
     .header {
@@ -53,7 +53,7 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 800;
       letter-spacing: -0.5px;
       color: #fff;
@@ -82,12 +82,6 @@
       margin-bottom: 18px;
     }
 
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
     label {
       display: block;
       font-size: 13px;
@@ -98,7 +92,7 @@
       letter-spacing: 0.5px;
     }
 
-    input, select {
+    input {
       width: 100%;
       background: #0f1218;
       border: 1px solid var(--card-border);
@@ -110,28 +104,9 @@
       transition: all 0.2s ease;
     }
 
-    input:focus, select:focus {
+    input:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-
-    .section-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--primary);
-      margin: 22px 0 14px 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--card-border);
     }
 
     .btn {
@@ -197,11 +172,25 @@
       text-decoration: underline;
     }
 
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 87, 34, 0.12);
+      border: 1px solid rgba(255, 87, 34, 0.3);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+
     .features-pill {
       display: flex;
       justify-content: center;
       gap: 12px;
-      margin-top: 18px;
+      margin-top: 20px;
       font-size: 12px;
       color: var(--text-muted);
     }
@@ -220,102 +209,41 @@
       <a href="/" class="logo">
         🏋️‍♂️ Fitness<span>Arena</span>
       </a>
-      <p>Build your weekly routine, crush streaks & conquer your physique</p>
+      <p>Join the arena and unlock your personalized fitness path</p>
     </div>
 
     <div class="card">
+      <div style="text-align: center;">
+        <span class="step-badge">🚀 Step 1 • Quick Account Signup</span>
+      </div>
+
       <div id="errorAlert" class="alert alert-error"></div>
       <div id="successAlert" class="alert alert-success"></div>
 
       <form id="registerForm">
-        <!-- Account Info -->
-        <div class="form-group">
-          <label for="name">Full Name</label>
-          <input type="text" id="name" required placeholder="e.g. John Doe">
-        </div>
-
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input type="email" id="email" required placeholder="name@example.com">
+          <input type="email" id="email" required placeholder="name@example.com" autocomplete="email">
         </div>
 
         <div class="form-group">
           <label for="password">Password (min 6 characters)</label>
-          <input type="password" id="password" required minlength="6" placeholder="••••••••">
-        </div>
-
-        <!-- Biometrics & Body Goals -->
-        <div class="section-title">⚖️ Biometrics & Body Goal</div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="age">Age</label>
-            <input type="number" id="age" required min="14" max="100" value="24" placeholder="24">
-          </div>
-          <div class="form-group">
-            <label for="gender">Gender</label>
-            <select id="gender" required>
-              <option value="MALE">Male</option>
-              <option value="FEMALE">Female</option>
-              <option value="OTHER">Other</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="heightCm">Height (cm)</label>
-            <input type="number" id="heightCm" required min="100" max="250" value="178" placeholder="178">
-          </div>
-          <div class="form-group">
-            <label for="currentWeightKg">Weight (kg)</label>
-            <input type="number" id="currentWeightKg" step="0.5" required min="30" max="300" value="75" placeholder="75">
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="goal">Fitness Goal</label>
-            <select id="goal" required>
-              <option value="BULK">💪 Bulking (+400 kcal surplus)</option>
-              <option value="CUT">🔥 Cutting (-500 kcal deficit)</option>
-              <option value="MAINTAIN">⚖️ Maintenance (Balance)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="activityLevel">Activity Level</label>
-            <select id="activityLevel" required>
-              <option value="SEDENTARY">Sedentary (Desk Job)</option>
-              <option value="LIGHT">Light (1-2 days/week)</option>
-              <option value="MODERATE" selected>Moderate (3-5 days/week)</option>
-              <option value="VERY_ACTIVE">Very Active (6-7 days/week)</option>
-              <option value="EXTREMELY_ACTIVE">Extremely Active (2x/day)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="dietaryPreference">Dietary Preference</label>
-          <select id="dietaryPreference" required>
-            <option value="VEGETARIAN">🥗 Vegetarian (Paneer, Dairy, Whey, Grains)</option>
-            <option value="VEGAN">🌱 Vegan (100% Plant-Based, Tofu, Soya, Lentils)</option>
-            <option value="NON_VEGETARIAN" selected>🥩 Non-Vegetarian (Chicken, Fish, Eggs & All)</option>
-          </select>
+          <input type="password" id="password" required minlength="6" placeholder="••••••••" autocomplete="new-password">
         </div>
 
         <button type="submit" id="submitBtn" class="btn">
-          Create Account & Enter Arena 🔥
+          Create Account & Continue →
         </button>
       </form>
 
       <div class="footer-links">
-        Already registered? <a href="/login">Log in here</a>
+        Already have an account? <a href="/login">Log in here</a>
       </div>
 
       <div class="features-pill">
-        <div class="pill-item">🔥 Gym Streaks</div>
+        <div class="pill-item">🔥 Streaks</div>
         <div class="pill-item">🥗 Macro Plans</div>
-        <div class="pill-item">🏆 Rank Tiers</div>
+        <div class="pill-item">🏆 Tiers</div>
       </div>
     </div>
   </div>
@@ -331,30 +259,16 @@
       errorAlert.style.display = 'none';
       successAlert.style.display = 'none';
       submitBtn.disabled = true;
-      submitBtn.innerText = 'Setting up your profile & macros...';
+      submitBtn.innerText = 'Creating account...';
 
-      const payload = {
-        name: document.getElementById('name').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        password: document.getElementById('password').value,
-      };
-
-      const biometrics = {
-        age: parseInt(document.getElementById('age').value, 10),
-        gender: document.getElementById('gender').value,
-        heightCm: parseFloat(document.getElementById('heightCm').value),
-        currentWeightKg: parseFloat(document.getElementById('currentWeightKg').value),
-        goal: document.getElementById('goal').value,
-        activityLevel: document.getElementById('activityLevel').value,
-        dietaryPreference: document.getElementById('dietaryPreference').value,
-      };
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
 
       try {
-        // 1. Register User
         const regRes = await fetch('/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({ email, password })
         });
 
         const regData = await regRes.json();
@@ -365,33 +279,18 @@
         const token = regData.data.token;
         localStorage.setItem('fitness_token', token);
 
-        // 2. Set Biometrics & Calculate Macros
-        const bioRes = await fetch('/api/profile', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify(biometrics)
-        });
-
-        const bioData = await bioRes.json();
-        if (!bioRes.ok) {
-          throw new Error(bioData.error || 'Failed to save biometrics');
-        }
-
-        successAlert.innerText = 'Account & Biometrics initialized! Redirecting to your Arena Dashboard...';
+        successAlert.innerText = 'Account created! Loading your personalization wizard...';
         successAlert.style.display = 'block';
 
         setTimeout(() => {
-          window.location.href = '/dashboard';
-        }, 1200);
+          window.location.href = '/onboarding';
+        }, 600);
 
       } catch (err) {
         errorAlert.innerText = err.message;
         errorAlert.style.display = 'block';
         submitBtn.disabled = false;
-        submitBtn.innerText = 'Create Account & Enter Arena 🔥';
+        submitBtn.innerText = 'Create Account & Continue →';
       }
     });
   </script>
