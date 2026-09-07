@@ -103,6 +103,15 @@ Use the **Authorize** button below and enter your JWT token as:
             fatsGrams: { type: 'number', example: 22 },
           },
         },
+        FoodScanInput: {
+          type: 'object',
+          required: ['imageBase64'],
+          properties: {
+            imageBase64: { type: 'string', description: 'Base64 encoded meal photo data', example: 'data:image/jpeg;base64,...' },
+            mimeType: { type: 'string', example: 'image/jpeg' },
+            userNotes: { type: 'string', example: 'Cooked with olive oil' },
+          },
+        },
       },
     },
     security: [

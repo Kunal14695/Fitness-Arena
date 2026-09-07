@@ -5,8 +5,15 @@ import { authenticateToken, AuthenticatedRequest } from '../middleware/auth.js';
 import { validateBody } from '../middleware/validate.js';
 import { calculateUserRank } from '../utils/gamification.js';
 import { generateGeminiMealPlan } from '../services/geminiNutrition.service.js';
+import { analyzeFoodImage } from '../services/geminiVisionNutrition.service.js';
 
 const router = Router();
+
+const scanMealSchema = z.object({
+  imageBase64: z.string().min(20, 'Image data is required'),
+  mimeType: z.string().optional().default('image/jpeg'),
+  userNotes: z.string().max(500).optional(),
+});
 
 const logMealSchema = z.object({
   mealName: z.string().min(2),
@@ -206,6 +213,46 @@ router.get('/daily-plan', authenticateToken, async (req: AuthenticatedRequest, r
     next(error);
   }
 });
+
+/**
+ * @route POST /api/nutrition/scan
+ * @desc Analyze a meal/food image with AI vision to detect calories, protein, carbs, and fats
+ */
+router.post(
+  '/scan',
+  authenticateToken,
+  validateBody(scanMealSchema),
+  async (req: AuthenticatedRequest, res: Response, next): Promise<void> => {
+    try {
+      const userId = req.user!.userId;
+      const { imageBase64, mimeType, userNotes } = req.body;
+
+      const profile = await prisma.profile.findUnique({
+        where: { userId },
+        select: { goal: true, dietaryPreference: true },
+      });
+
+      const analysis = await analyzeFoodImage({
+        imageBase64,
+        mimeType,
+        userNotes,
+        userGoal: profile?.goal,
+      });
+
+      res.json({
+        success: true,
+        message: 'Food scanned and analyzed successfully',
+        data: analysis,
+      });
+    } catch (error: any) {
+      console.error('Error scanning food image:', error);
+      res.status(500).json({
+        success: false,
+        error: error.message || 'Failed to analyze food image with AI vision.',
+      });
+    }
+  }
+);
 
 /**
  * @route POST /api/nutrition/log

@@ -1267,6 +1267,193 @@
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(255, 87, 34, 0.35);
     }
+
+    /* ========================================================
+       FOOD SCANNER CAMERA & VISION MODAL STYLES
+       ======================================================== */
+    .scanner-mode-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      background: #121622;
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+    }
+    .scanner-tab-btn {
+      flex: 1;
+      padding: 9px 14px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .scanner-tab-btn.active {
+      background: #1e2638;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .scanner-video-container {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      background: #090c13;
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px dashed rgba(255, 255, 255, 0.15);
+    }
+    .scanner-video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .viewfinder-crosshair {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border: 2px dashed rgba(16, 185, 129, 0.6);
+      border-radius: 16px;
+      pointer-events: none;
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.35);
+      animation: pulseTarget 2s infinite ease-in-out;
+    }
+    @keyframes pulseTarget {
+      0%, 100% { border-color: rgba(16, 185, 129, 0.6); transform: scale(1); }
+      50% { border-color: rgba(56, 189, 248, 0.9); transform: scale(1.02); }
+    }
+    .camera-control-bar {
+      position: absolute;
+      bottom: 14px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      z-index: 10;
+    }
+    .cam-snap-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #10b981;
+      border: 4px solid rgba(255, 255, 255, 0.9);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.6);
+      transition: transform 0.1s ease;
+    }
+    .cam-snap-btn:active {
+      transform: scale(0.92);
+    }
+    .cam-tool-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cam-tool-btn:hover {
+      background: rgba(0, 0, 0, 0.85);
+      border-color: #fff;
+    }
+    .food-preview-img {
+      width: 100%;
+      max-height: 270px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      display: block;
+    }
+    .scanning-overlay-anim {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 10px;
+      text-align: center;
+    }
+    .scan-radar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 3px solid #10b981;
+      border-top-color: transparent;
+      animation: spinRadar 0.8s linear infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes spinRadar {
+      to { transform: rotate(360deg); }
+    }
+    .scan-result-card {
+      background: #121722;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 14px;
+    }
+    .macro-edit-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .macro-edit-box {
+      background: #1a202e;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px 6px;
+      text-align: center;
+    }
+    .macro-edit-box label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .macro-edit-box input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      text-align: center;
+      padding: 2px 0;
+      outline: none;
+    }
+    .detected-item-pill {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 10px;
+      background: #19202f;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
   </style>
 </head>
 <body>
@@ -1337,7 +1524,8 @@
       <div class="panel">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
           <h2 style="margin-bottom: 0;">🥗 Daily Meals <span id="aiBadge" style="font-size: 11px; padding: 3px 8px; border-radius: 999px; background: rgba(56, 189, 248, 0.2); color: #38bdf8; font-weight: 700; vertical-align: middle;">✨ Gemini AI</span></h2>
-          <div style="display: flex; gap: 8px; align-items: center;">
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <button onclick="openFoodScannerModal()" id="scanFoodBtn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; color: #fff; border-radius: 8px; padding: 5px 12px; font-size: 12.5px; cursor: pointer; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35); transition: transform 0.15s ease;" title="Snap or upload food photo to check calories & protein">📸 Scan Food (AI)</button>
             <span id="dietBadge" style="font-size: 12px; padding: 4px 10px; border-radius: 999px; background: rgba(16, 185, 129, 0.2); color: var(--accent-green); font-weight: 700;">Diet Plan</span>
             <button onclick="refreshMeals()" id="refreshMealsBtn" style="background: #232a3b; border: 1px solid var(--card-border); color: #fff; border-radius: 8px; padding: 4px 10px; font-size: 12px; cursor: pointer; font-weight: 600;">🔄 Regenerate</button>
           </div>
@@ -2012,6 +2200,149 @@
     </div>
   </div>
 
+  <!-- ========================================================
+       MODAL 3: AI FOOD & NUTRITION SCANNER
+       ======================================================== -->
+  <div id="foodScannerModal" class="modal-overlay" onclick="handleModalBackdropClick(event, 'foodScannerModal')">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <h3 style="font-size: 18px; font-weight: 800; margin: 0; color: #fff;">📸 Food & Nutrition Scanner</h3>
+            <span style="font-size: 10px; font-weight: 800; background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 2px 8px; border-radius: 999px;">Vision AI</span>
+          </div>
+          <span style="font-size: 12px; color: var(--text-muted); margin-top: 2px; display: block;">Snap or upload a food photo to detect calories, protein, carbs & fats</span>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="closeFoodScannerModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Input Tabs (Camera vs Upload) -->
+        <div class="scanner-mode-tabs" id="scannerModeTabs">
+          <button type="button" class="scanner-tab-btn active" id="tabLiveCamBtn" onclick="switchScannerMode('camera')">
+            📹 Live Camera
+          </button>
+          <button type="button" class="scanner-tab-btn" id="tabUploadBtn" onclick="switchScannerMode('upload')">
+            📁 Upload Photo
+          </button>
+        </div>
+
+        <!-- 1. Live Camera Mode -->
+        <div id="scannerCameraView">
+          <div class="scanner-video-container">
+            <video id="foodCamVideo" autoplay playsinline muted></video>
+            <div class="viewfinder-crosshair"></div>
+            <div class="camera-control-bar">
+              <button type="button" class="cam-tool-btn" onclick="flipCamera()" title="Switch Camera (Front/Back)">🔄</button>
+              <button type="button" class="cam-snap-btn" onclick="captureCameraPhoto()" title="Take Photo">📸</button>
+              <button type="button" class="cam-tool-btn" onclick="triggerFileUpload()" title="Choose File Instead">🖼️</button>
+            </div>
+          </div>
+          <div id="camStatusMsg" style="font-size: 11.5px; color: var(--text-muted); text-align: center; margin-top: 8px;">
+            Align food inside the target and tap the green camera button to snap.
+          </div>
+        </div>
+
+        <!-- 2. File Upload Mode -->
+        <div id="scannerUploadView" style="display: none;">
+          <div style="border: 2px dashed rgba(255,255,255,0.2); border-radius: 14px; padding: 36px 20px; text-align: center; cursor: pointer; background: #0c1018; transition: border-color 0.2s;" onclick="triggerFileUpload()" ondragover="event.preventDefault()" ondrop="handleDropFile(event)">
+            <div style="font-size: 38px; margin-bottom: 8px;">🥗</div>
+            <div style="font-weight: 700; color: #fff; font-size: 14px;">Click to select or drop meal photo</div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Supports JPG, PNG, WEBP (Smartphone camera photos supported)</div>
+          </div>
+        </div>
+        <input type="file" id="foodFileInput" accept="image/*" capture="environment" style="display: none;" onchange="handleFileSelected(event)">
+
+        <!-- Hidden Canvas for frame snapshot -->
+        <canvas id="foodCanvas" style="display: none;"></canvas>
+
+        <!-- 3. Captured Preview & Notes Section -->
+        <div id="scannerPreviewSection" style="display: none; margin-top: 14px;">
+          <img id="foodPreviewImg" class="food-preview-img" alt="Captured food preview">
+          
+          <div style="margin-top: 10px;">
+            <label style="font-size: 11.5px; color: var(--text-muted); font-weight: 600;">Optional Cooking / Ingredient Notes</label>
+            <input type="text" id="foodNotesInput" placeholder="e.g. 1 tbsp olive oil used, brown rice, whey scoop..." style="width: 100%; margin-top: 4px; font-size: 12.5px;">
+          </div>
+
+          <div style="display: flex; gap: 8px; margin-top: 12px;">
+            <button type="button" class="modal-cancel-btn" onclick="retakePhoto()" style="flex: 1;">🔄 Retake</button>
+            <button type="button" id="runAnalyzeBtn" class="action-btn" onclick="runFoodAnalysis()" style="margin-top: 0; flex: 2; background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+              ⚡ Analyze Meal with Vision AI
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. Loading Radar Indicator -->
+        <div id="scannerLoadingSection" class="scanning-overlay-anim" style="display: none;">
+          <div class="scan-radar"></div>
+          <strong style="color: #38bdf8; font-size: 14px;">Scanning Meal with Gemini AI...</strong>
+          <span style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">Detecting ingredients, estimating portions, and computing macros</span>
+        </div>
+
+        <!-- 5. Analysis Results Card (Editable & Loggable) -->
+        <div id="scannerResultSection" style="display: none;">
+          <div class="scan-result-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px;">
+              <div>
+                <h4 id="resDishName" style="margin: 0; font-size: 16px; font-weight: 800; color: #fff;">Dish Name</h4>
+                <div id="resAnalysisNotes" style="font-size: 11.5px; color: #94a3b8; margin-top: 3px; line-height: 1.4;">Notes</div>
+              </div>
+              <span id="resConfidenceBadge" style="font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(16, 185, 129, 0.2); color: #10b981; white-space: nowrap;">HIGH CONFIDENCE</span>
+            </div>
+
+            <!-- Macro Edit Grid -->
+            <div class="macro-edit-grid">
+              <div class="macro-edit-box">
+                <label>🔥 Calories</label>
+                <input type="number" id="resCal" value="0" min="0">
+              </div>
+              <div class="macro-edit-box">
+                <label>🥩 Protein (g)</label>
+                <input type="number" id="resPro" value="0" step="0.1" min="0">
+              </div>
+              <div class="macro-edit-box">
+                <label>🌾 Carbs (g)</label>
+                <input type="number" id="resCarb" value="0" step="0.1" min="0">
+              </div>
+              <div class="macro-edit-box">
+                <label>🥑 Fats (g)</label>
+                <input type="number" id="resFat" value="0" step="0.1" min="0">
+              </div>
+            </div>
+
+            <!-- Detected Items Breakdown -->
+            <div style="margin-top: 10px;">
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Detected Ingredients & Portions:</span>
+              <div id="resDetectedItemsList" style="margin-top: 6px; max-height: 130px; overflow-y: auto;"></div>
+            </div>
+
+            <!-- Meal Category Selector -->
+            <div style="margin-top: 12px;">
+              <label style="font-size: 11.5px; color: var(--text-muted); font-weight: 600;">Log to Category</label>
+              <select id="resCategorySelect" style="width: 100%; margin-top: 4px;">
+                <option value="BREAKFAST">Breakfast</option>
+                <option value="LUNCH">Lunch</option>
+                <option value="DINNER">Dinner</option>
+                <option value="PRE_WORKOUT">Pre-Workout Meal</option>
+                <option value="POST_WORKOUT">Post-Workout Recovery</option>
+                <option value="SNACK">Snack</option>
+              </select>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 14px;">
+              <button type="button" class="modal-cancel-btn" onclick="retakePhoto()" style="flex: 1;">Scan Another</button>
+              <button type="button" id="logScannedMealBtn" class="action-btn" onclick="logScannedMeal()" style="margin-top: 0; flex: 2; background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);">
+                Log Meal & Earn +20 XP 🔥
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <script>
     const token = localStorage.getItem('fitness_token');
     if (!token) {
@@ -2235,6 +2566,325 @@
       if (e.target.id === modalId) {
         if (modalId === 'workoutLogModal') closeWorkoutLogModal();
         if (modalId === 'workoutSplitsModal') closeWorkoutSplitsModal();
+        if (modalId === 'foodScannerModal') closeFoodScannerModal();
+      }
+    }
+
+    /* ========================================================
+       AI FOOD & NUTRITION SCANNER CAMERA SCRIPTS
+       ======================================================== */
+    let cameraStream = null;
+    let currentCameraFacing = 'environment';
+    let scannedImageBase64 = null;
+    let currentScanData = null;
+
+    async function openFoodScannerModal() {
+      document.getElementById('foodScannerModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      resetScannerState();
+      switchScannerMode('camera');
+    }
+
+    function closeFoodScannerModal() {
+      stopCameraStream();
+      document.getElementById('foodScannerModal').style.display = 'none';
+      document.body.style.overflow = '';
+      resetScannerState();
+    }
+
+    function resetScannerState() {
+      scannedImageBase64 = null;
+      currentScanData = null;
+      document.getElementById('scannerPreviewSection').style.display = 'none';
+      document.getElementById('scannerLoadingSection').style.display = 'none';
+      document.getElementById('scannerResultSection').style.display = 'none';
+      document.getElementById('scannerModeTabs').style.display = 'flex';
+      document.getElementById('foodNotesInput').value = '';
+      const fileInput = document.getElementById('foodFileInput');
+      if (fileInput) fileInput.value = '';
+    }
+
+    function switchScannerMode(mode) {
+      const tabCam = document.getElementById('tabLiveCamBtn');
+      const tabUp = document.getElementById('tabUploadBtn');
+      const camView = document.getElementById('scannerCameraView');
+      const upView = document.getElementById('scannerUploadView');
+
+      if (mode === 'camera') {
+        tabCam.classList.add('active');
+        tabUp.classList.remove('active');
+        camView.style.display = 'block';
+        upView.style.display = 'none';
+        startCameraStream();
+      } else {
+        tabUp.classList.add('active');
+        tabCam.classList.remove('active');
+        camView.style.display = 'none';
+        upView.style.display = 'block';
+        stopCameraStream();
+      }
+    }
+
+    async function startCameraStream() {
+      const video = document.getElementById('foodCamVideo');
+      const statusMsg = document.getElementById('camStatusMsg');
+      stopCameraStream();
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        statusMsg.innerHTML = '⚠️ Live camera is not supported in this browser. Please use <strong>Upload Photo</strong> tab.';
+        return;
+      }
+
+      try {
+        const constraints = {
+          video: {
+            facingMode: currentCameraFacing,
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+          },
+          audio: false,
+        };
+
+        cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+        video.srcObject = cameraStream;
+        video.play();
+        statusMsg.innerText = 'Point at food and tap 📸 to snap.';
+      } catch (err) {
+        console.warn('Camera stream error:', err);
+        try {
+          cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+          video.srcObject = cameraStream;
+          video.play();
+          statusMsg.innerText = 'Point at food and tap 📸 to snap.';
+        } catch (errFallback) {
+          statusMsg.innerHTML = '⚠️ Camera permission not granted. Tap <strong>Upload Photo</strong> above to select or snap an image.';
+        }
+      }
+    }
+
+    function stopCameraStream() {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(t => t.stop());
+        cameraStream = null;
+      }
+      const video = document.getElementById('foodCamVideo');
+      if (video) video.srcObject = null;
+    }
+
+    function flipCamera() {
+      currentCameraFacing = currentCameraFacing === 'environment' ? 'user' : 'environment';
+      startCameraStream();
+    }
+
+    function captureCameraPhoto() {
+      const video = document.getElementById('foodCamVideo');
+      const canvas = document.getElementById('foodCanvas');
+      if (!video || !video.videoWidth) {
+        alert('Camera is warming up. Please wait a second or use Upload Photo.');
+        return;
+      }
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const base64 = canvas.toDataURL('image/jpeg', 0.85);
+      showCapturedPreview(base64);
+      stopCameraStream();
+    }
+
+    function triggerFileUpload() {
+      document.getElementById('foodFileInput').click();
+    }
+
+    function handleFileSelected(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      processImageFile(file);
+    }
+
+    function handleDropFile(e) {
+      e.preventDefault();
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+        processImageFile(e.dataTransfer.files[0]);
+      }
+    }
+
+    function processImageFile(file) {
+      if (!file.type.startsWith('image/')) {
+        alert('Please select a valid photo (JPG, PNG, WEBP).');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        showCapturedPreview(evt.target.result);
+        stopCameraStream();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function showCapturedPreview(base64) {
+      scannedImageBase64 = base64;
+      document.getElementById('foodPreviewImg').src = base64;
+      document.getElementById('scannerModeTabs').style.display = 'none';
+      document.getElementById('scannerCameraView').style.display = 'none';
+      document.getElementById('scannerUploadView').style.display = 'none';
+      document.getElementById('scannerPreviewSection').style.display = 'block';
+      document.getElementById('scannerResultSection').style.display = 'none';
+      document.getElementById('scannerLoadingSection').style.display = 'none';
+    }
+
+    function retakePhoto() {
+      resetScannerState();
+      switchScannerMode('camera');
+    }
+
+    async function runFoodAnalysis() {
+      if (!scannedImageBase64) {
+        alert('Please capture or upload a meal photo first.');
+        return;
+      }
+
+      const analyzeBtn = document.getElementById('runAnalyzeBtn');
+      analyzeBtn.disabled = true;
+      document.getElementById('scannerPreviewSection').style.display = 'none';
+      document.getElementById('scannerLoadingSection').style.display = 'flex';
+      document.getElementById('scannerResultSection').style.display = 'none';
+
+      const userNotes = document.getElementById('foodNotesInput').value.trim();
+
+      try {
+        const res = await fetch('/api/nutrition/scan', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            imageBase64: scannedImageBase64,
+            mimeType: 'image/jpeg',
+            userNotes
+          })
+        });
+
+        const data = await res.json();
+        document.getElementById('scannerLoadingSection').style.display = 'none';
+        analyzeBtn.disabled = false;
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'Failed to analyze food image with Vision AI.');
+        }
+
+        displayScanResult(data.data);
+      } catch (err) {
+        document.getElementById('scannerLoadingSection').style.display = 'none';
+        document.getElementById('scannerPreviewSection').style.display = 'block';
+        analyzeBtn.disabled = false;
+        alert(`Analysis Error: ${err.message}`);
+      }
+    }
+
+    function displayScanResult(res) {
+      currentScanData = res;
+      document.getElementById('resDishName').innerText = res.dishName || 'Scanned Meal';
+      document.getElementById('resAnalysisNotes').innerText = res.analysisNotes || 'Visual nutrition estimate computed by Gemini Vision.';
+      
+      const confBadge = document.getElementById('resConfidenceBadge');
+      confBadge.innerText = `${res.confidenceLevel || 'HIGH'} CONFIDENCE`;
+      if (res.confidenceLevel === 'HIGH') {
+        confBadge.style.background = 'rgba(16, 185, 129, 0.2)';
+        confBadge.style.color = '#10b981';
+      } else if (res.confidenceLevel === 'MEDIUM') {
+        confBadge.style.background = 'rgba(234, 179, 8, 0.2)';
+        confBadge.style.color = '#eab308';
+      } else {
+        confBadge.style.background = 'rgba(239, 68, 68, 0.2)';
+        confBadge.style.color = '#ef4444';
+      }
+
+      // Populate editable macro inputs
+      document.getElementById('resCal').value = res.totalCalories || 0;
+      document.getElementById('resPro').value = res.totalProteinGrams || 0;
+      document.getElementById('resCarb').value = res.totalCarbsGrams || 0;
+      document.getElementById('resFat').value = res.totalFatsGrams || 0;
+
+      // Select suggested category
+      const catSelect = document.getElementById('resCategorySelect');
+      if (res.suggestedCategory) {
+        catSelect.value = res.suggestedCategory;
+      }
+
+      // Render detected items pills
+      const itemsContainer = document.getElementById('resDetectedItemsList');
+      if (Array.isArray(res.detectedItems) && res.detectedItems.length > 0) {
+        itemsContainer.innerHTML = res.detectedItems.map(item => `
+          <div class="detected-item-pill">
+            <div>
+              <strong style="color: #fff;">${item.name}</strong>
+              <span style="color: #94a3b8; font-size: 11px; margin-left: 4px;">(${item.portionEstimate})</span>
+            </div>
+            <div style="font-weight: 700; color: #38bdf8;">
+              ${item.calories} kcal • ${item.proteinGrams}g P
+            </div>
+          </div>
+        `).join('');
+      } else {
+        itemsContainer.innerHTML = '<div style="font-size: 12px; color: var(--text-muted);">No individual ingredients distinguished.</div>';
+      }
+
+      document.getElementById('scannerResultSection').style.display = 'block';
+    }
+
+    async function logScannedMeal() {
+      const btn = document.getElementById('logScannedMealBtn');
+      const mealName = document.getElementById('resDishName').innerText || 'Scanned Meal';
+      const category = document.getElementById('resCategorySelect').value;
+      const calories = parseInt(document.getElementById('resCal').value, 10) || 0;
+      const proteinGrams = parseFloat(document.getElementById('resPro').value) || 0;
+      const carbsGrams = parseFloat(document.getElementById('resCarb').value) || 0;
+      const fatsGrams = parseFloat(document.getElementById('resFat').value) || 0;
+
+      if (calories <= 0) {
+        alert('Please ensure calories are greater than 0.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = 'Logging meal...';
+
+      try {
+        const res = await fetch('/api/nutrition/log', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            mealName,
+            category,
+            calories,
+            proteinGrams,
+            carbsGrams,
+            fatsGrams
+          })
+        });
+
+        const data = await res.json();
+        btn.disabled = false;
+        btn.innerText = 'Log Meal & Earn +20 XP 🔥';
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Failed to log meal.');
+        }
+
+        alert(`🎉 Meal Logged Successfully!\n🍽️ ${mealName} (${calories} kcal, ${proteinGrams}g Protein)\n⭐ +20 XP Earned towards your Arena Rank!`);
+        closeFoodScannerModal();
+        fetchDashboardData();
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerText = 'Log Meal & Earn +20 XP 🔥';
+        alert(err.message);
       }
     }
 
