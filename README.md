@@ -1,32 +1,42 @@
-# 🏋️‍♂️ Fitness Arena - Backend API
+# 🏋️‍♂️ Fitness Arena - Backend & Web App
 
-> Production-ready RESTful backend API for **Fitness Arena**, featuring weekly workout routine building, Duolingo-style consistency streaks, biometric TDEE & macro calculations (bulking & cutting), tailored full-day meal planning, and gamification ranks (Novice to Titan).
+> Production-ready full-stack fitness application and RESTful API for **Fitness Arena**, featuring an **AI Food & Nutrition Camera Scanner**, weekly workout routine building, Duolingo-style consistency streaks, biometric TDEE & macro calculations (bulking & cutting), tailored full-day meal planning, and gamification ranks (Novice to Titan).
 
 ---
 
 ## 🌟 Key Features
 
-1. **User Authentication & Biometrics**
+1. **📸 AI Food & Nutrition Scanning Camera (Google Gemini Vision)**
+   - **Snap or Upload**: Use live device camera or photo upload to inspect meals on the plate.
+   - **Visual Macronutrient Extraction**: Detects individual ingredients, estimates portion sizes in grams, and computes **Calories, Protein, Carbs, and Fats**.
+   - **Interactive Calibration & 1-Click Logging**: Review or tweak detected values, choose meal category (Breakfast, Lunch, Dinner, Snack, Pre/Post-Workout), and log instantly to your daily database while earning **+20 XP**.
+
+2. **User Authentication & Biometrics**
    - Secure JWT token auth & bcrypt password hashing.
    - Profile metrics: Age, Gender, Height (cm), Weight (kg), Target Weight, Goal (`BULK`, `CUT`, `MAINTAIN`), and Activity Level.
-2. **Dynamic Nutrition & Calorie Engine**
+
+3. **Dynamic Nutrition & Calorie Engine**
    - **Mifflin-St Jeor BMR** and **TDEE** formulas.
    - **Bulking**: Clean $+400\text{ kcal}$ surplus with $2.0\text{ g/kg}$ protein.
    - **Cutting**: Moderate $-500\text{ kcal}$ deficit with $2.2\text{ g/kg}$ muscle-sparing protein.
    - Automatic calculation of daily target calories, protein, carbs, and fats.
-3. **Weekly Workout Routine Split Builder**
-   - Create 7-day personalized workout routines (e.g., Push/Pull/Legs, Upper/Lower).
+
+4. **Weekly Workout Routine Split Builder**
+   - Create 7-day personalized workout routines (e.g., Push/Pull/Legs, Bro Split, Upper/Lower, Full Body).
    - Pre-populated library of compound and isolation exercises (Chest, Back, Legs, Shoulders, Arms, Core).
    - Add custom exercises with target sets, reps, weight, and rest time.
-4. **Gym Streaks & Consistency Engine**
+
+5. **Gym Streaks & Consistency Engine**
    - Daily active workout tracking and check-ins.
    - Streak freeze shields (`freezeCount`) to protect your streak if you miss a day.
    - Scheduled Rest Day recognition (rest days don't break streaks).
    - Automatic longest streak tracking and milestone streak bonus XP.
-5. **Personalized Full-Day Meal Plans**
-   - Instant full-day meal plans (Breakfast, Lunch, Dinner, Snack) calibrated for the user's specific caloric and macro targets.
+
+6. **Personalized Full-Day Meal Plans (Gemini AI)**
+   - Instant full-day culinary meal plans (Breakfast, Lunch, Pre-Workout, Post-Workout, Dinner, Snack) calibrated for the athlete's specific caloric and macro targets.
    - Meal logging and daily consumption tracking against daily targets.
-6. **Gamified Ranks & Leaderboard**
+
+7. **Gamified Ranks & Leaderboard**
    - Earn XP by completing workouts (+50 XP), hitting streaks, and logging meals (+20 XP).
    - 7 Rank Tiers:
      - 🥉 **Novice** (0 – 200 XP)
@@ -52,6 +62,15 @@ You can execute requests and test endpoints directly with the **"Try it out"** b
 
 ## 📡 API Endpoints Summary
 
+### Nutrition & Vision AI (`/api/nutrition`)
+| Method | Endpoint | Description | Auth |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/nutrition/scan` | **📸 AI Food Camera Scan**: Analyze meal image to detect food items, calories & protein | Bearer |
+| `GET` | `/api/nutrition/daily-plan` | Generated full-day meal plan matching user's goal & calories (Gemini AI) | Bearer |
+| `GET` | `/api/nutrition/meals` | List meal database catalog | Public |
+| `POST` | `/api/nutrition/log` | Log meal consumed (**+20 XP**) | Bearer |
+| `GET` | `/api/nutrition/today-summary` | View consumed vs target calories & macros | Bearer |
+
 ### Authentication (`/api/auth`)
 | Method | Endpoint | Description | Auth |
 | :--- | :--- | :--- | :--- |
@@ -73,7 +92,7 @@ You can execute requests and test endpoints directly with the **"Try it out"** b
 | `GET` | `/api/workouts/routines` | Get all weekly routines created by user | Bearer |
 | `POST` | `/api/workouts/routines` | Create a 7-day weekly split routine | Bearer |
 | `GET` | `/api/workouts/routines/:id` | Get details of a specific routine | Bearer |
-| `POST` | `/api/workouts/log` | Log completed workout -> **increments streak & awards XP** | Bearer |
+| `POST` | `/api/workouts/log` | Log completed workout -> **increments streak & awards +50 XP** | Bearer |
 | `GET` | `/api/workouts/history` | Get past workout history | Bearer |
 
 ### Duolingo-style Streaks (`/api/streak`)
@@ -81,14 +100,6 @@ You can execute requests and test endpoints directly with the **"Try it out"** b
 | :--- | :--- | :--- | :--- |
 | `GET` | `/api/streak` | Get current streak count, longest streak & status | Bearer |
 | `POST` | `/api/streak/check-in` | Daily check-in / rest day to preserve streak & gain XP | Bearer |
-
-### Nutrition & Meal Plans (`/api/nutrition`)
-| Method | Endpoint | Description | Auth |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/nutrition/daily-plan` | Generated full-day meal plan matching user's goal & calories | Bearer |
-| `GET` | `/api/nutrition/meals` | List meal database | Public |
-| `POST` | `/api/nutrition/log` | Log meal consumed (+20 XP) | Bearer |
-| `GET` | `/api/nutrition/today-summary` | View consumed vs target calories & macros | Bearer |
 
 ### Gamification & Ranks (`/api/rank`)
 | Method | Endpoint | Description | Auth |
@@ -123,17 +134,11 @@ You can execute requests and test endpoints directly with the **"Try it out"** b
 
 ---
 
-## 🌐 Deploy to Live URL (Render / Railway)
+## ☁️ Deployment (Vercel / Neon / Render)
 
-### Deploy to Render in 3 Steps:
-1. Push this repository to GitHub:
-   ```bash
-   git add .
-   git commit -m "feat: complete fitness arena backend"
-   git remote add origin <your-github-repo-url>
-   git push -u origin main
-   ```
-2. Go to [Render Dashboard](https://dashboard.render.com), click **New + Web Service**, and connect your repository.
-3. Render will auto-detect the `render.yaml` blueprint and deploy your live URL (e.g. `https://fitness-arena-api.onrender.com`).
-   - Live Swagger docs will be at `https://fitness-arena-api.onrender.com/api/docs`.
->>>>>>> a5a20b4 (feat: complete Fitness Arena backend with streaks, workouts, nutrition, and gamification)
+Fitness Arena is pre-configured for instant deployment on **Vercel** with **Neon Serverless PostgreSQL**:
+1. Check [`DEPLOY_TO_VERCEL.md`](./DEPLOY_TO_VERCEL.md) for step-by-step instructions.
+2. Required Environment Variables on Vercel:
+   * `DATABASE_URL`: Your pooled Neon connection string (`...-pooler...`)
+   * `JWT_SECRET`: Secret JWT signing key
+   * `GEMINI_API_KEY`: Google Gemini API key for Vision AI & Coach Arena
