@@ -62,7 +62,6 @@ router.get('/', authenticateToken, async (req: AuthenticatedRequest, res: Respon
  */
 router.put(
   '/',
-  authenticateToken,
   validateBody(updateProfileSchema),
   async (req: AuthenticatedRequest, res: Response, next): Promise<void> => {
     try {
