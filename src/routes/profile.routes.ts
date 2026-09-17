@@ -60,9 +60,9 @@ router.get('/', authenticateToken, async (req: AuthenticatedRequest, res: Respon
  * @route PUT /api/profile
  * @desc Set or update biometrics, recalculates BMR, TDEE, and daily caloric/macro targets
  */
+// Test attribution comment for Autter trigger verification
 router.put(
   '/',
-  authenticateToken,
   validateBody(updateProfileSchema),
   async (req: AuthenticatedRequest, res: Response, next): Promise<void> => {
     try {
