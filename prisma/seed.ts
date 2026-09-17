@@ -29,6 +29,13 @@ async function main() {
       instructions: 'Keep your body in a straight plank line. Lower chest to floor and push back up while engaging core.',
     },
     {
+      name: 'Bulgarian Split Squat',
+      muscleGroup: 'LEGS',
+      equipment: 'DUMBBELL',
+      description: 'Unilateral leg movement emphasizing quadriceps, glutes, and balance.',
+      instructions: 'Place one foot behind you on a bench, step forward with the other. Lower your hips until rear knee is near the floor, then drive through front heel.',
+    },
+    {
       name: 'Barbell Deadlift',
       muscleGroup: 'BACK',
       equipment: 'BARBELL',
